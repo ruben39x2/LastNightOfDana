@@ -24,6 +24,8 @@ public class Sequence {
    private SequenceListener listener;
    private boolean listenerNotified = false;
    private long duration;
+   private ImageView imageView;
+   private int imageResource;
 
 
    public Sequence(SequenceEnum type, Activity activity){
@@ -38,23 +40,35 @@ public class Sequence {
       this.duration = duration;
    }
 
+   public Sequence(SequenceEnum type, ImageView imageView, int imageResource){
+      this.type = type;
+      this.imageView = imageView;
+      this.imageResource = imageResource;
+   }
+
    public void setListener(SequenceListener listener){
       this.listener = listener;
    }
 
    public void play(){
       switch (type){
-         case FADE_TO_BLACK:
-            fadeAllToBlack(duration);
+         case FADE_ALL_TO_BLACK:
+            fadeAllToBlack();
             break;
          case SHOW_HEADPHONES_ALERT:
-            showHeadphonesAlert(duration);
+            showHeadphonesAlert();
             break;
          case HIDE_HEADPHONES_ALERT:
-            hideHeadphonesAlert(duration);
+            hideHeadphonesAlert();
             break;
          case WAIT:
-            waitBro(duration);
+            waitBro();
+            break;
+         case FADE_FROM_BLACK:
+            fadeFromBlack(duration);
+            break;
+         case SET_IMAGE:
+            setImage();
             break;
          case TEST:
             test();
@@ -75,7 +89,7 @@ public class Sequence {
       }
    }
 
-   private void fadeAllToBlack(final long duration){
+   private void fadeAllToBlack(){
       final ViewGroup parentViewGroup = (ViewGroup) activity.findViewById(R.id.layout_father);
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
@@ -99,7 +113,7 @@ public class Sequence {
       }
    }
 
-   private void showHeadphonesAlert(long duration){
+   private void showHeadphonesAlert(){
       ImageView imageHeadphones = (ImageView) activity.findViewById(R.id.image_headphones);
       TextView textHeadphones = (TextView) activity.findViewById(R.id.text_headphones);
       Animation fade = new AlphaAnimation(0f, 1f);
@@ -114,10 +128,9 @@ public class Sequence {
       imageHeadphones.startAnimation(fade);
       textHeadphones.setVisibility(View.VISIBLE);
       textHeadphones.startAnimation(fade);
-
    }
 
-   private void hideHeadphonesAlert(long duration){
+   private void hideHeadphonesAlert(){
       final ImageView imageHeadphones = (ImageView) activity.findViewById(R.id.image_headphones);
       final TextView textHeadphones = (TextView) activity.findViewById(R.id.text_headphones);
       Animation fade = new AlphaAnimation(1f, 0f);
@@ -132,10 +145,9 @@ public class Sequence {
       });
       imageHeadphones.startAnimation(fade);
       textHeadphones.startAnimation(fade);
-
    }
 
-   private void waitBro(final long duration){
+   private void waitBro(){
       new Thread(new Runnable() {
          @Override
          public void run() {
@@ -152,6 +164,25 @@ public class Sequence {
             });
          }
       }).start();
+   }
+
+   private void fadeFromBlack(long duration){
+      ImageView imageBackground = (ImageView) activity.findViewById(R.id.image_background);
+      Animation fade = new AlphaAnimation(0f, 1f);
+      fade.setDuration(duration);
+      fade.setAnimationListener(new AnimationEndListener() {
+         @Override
+         public void onAnimationEnd(Animation animation) {
+            notifyListener();
+         }
+      });
+      imageBackground.setVisibility(View.VISIBLE);
+      imageBackground.startAnimation(fade);
+   }
+
+   private void setImage(){
+      imageView.setImageResource(imageResource);
+      notifyListener();
    }
 
    private void test(){
