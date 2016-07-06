@@ -1,4 +1,4 @@
-package ember.ash.lastnightofdana;
+package ember.ash.lastnightofdana.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,8 +8,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.sequence.Sequence;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -20,7 +26,6 @@ public class GameActivity extends AppCompatActivity {
 
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
               WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
    }
 
    public void onClickStartGame(View view){
@@ -28,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
       switch (id){
          case R.id.button_dana:
             Toast.makeText(this, "Gogo", Toast.LENGTH_SHORT).show();
+            Sequence.fadeAllToBlack(this, 2000);
             break;
          default:
             Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();

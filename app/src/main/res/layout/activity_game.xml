@@ -2,15 +2,18 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_father"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="ember.ash.lastnightofdana.GameActivity">
+    tools:context=".activity.GameActivity"
+    android:background="@android:color/black">
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="this is the rhythm of the night all night all day oh yeah"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image_background"
+        android:src="@drawable/candle"/>
 
     <Button
         android:layout_width="wrap_content"
