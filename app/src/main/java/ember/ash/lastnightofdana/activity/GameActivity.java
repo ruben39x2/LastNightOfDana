@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.game.Game;
 import ember.ash.lastnightofdana.sequence.Sequence;
 
 public class GameActivity extends AppCompatActivity {
@@ -32,12 +33,15 @@ public class GameActivity extends AppCompatActivity {
       int id = view.getId();
       switch (id){
          case R.id.button_dana:
-            Toast.makeText(this, "Gogo", Toast.LENGTH_SHORT).show();
-            Sequence.fadeAllToBlack(this, 2000);
+            startGameDana();
             break;
          default:
             Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
             break;
       }
+   }
+
+   private void startGameDana(){
+      Game game = new Game(this);
    }
 }

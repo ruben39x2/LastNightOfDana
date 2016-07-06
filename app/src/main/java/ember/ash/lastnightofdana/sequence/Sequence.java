@@ -1,11 +1,11 @@
 package ember.ash.lastnightofdana.sequence;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
 
@@ -13,8 +13,34 @@ import ember.ash.lastnightofdana.R;
  * Created by Rubén Montero Vázquez on 06/07/2016
  */
 public class Sequence {
+   private SequenceEnum type;
+   private Activity activity;
+   private SequenceListener listener;
 
-   public static void fadeAllToBlack(final Activity activity, final long duration){
+   public Sequence(SequenceEnum type, Activity activity){
+      this.type = type;
+      this.activity = activity;
+   }
+
+   public void setListener(SequenceListener listener){
+      this.listener = listener;
+   }
+
+   public void play(){
+      switch (type){
+         case FADE_TO_BLACK:
+            fadeAllToBlack(5000);
+            break;
+         case TEST:
+            test();
+            break;
+      }
+   }
+
+
+
+
+   private void fadeAllToBlack(final long duration){
       final ViewGroup parentViewGroup = (ViewGroup) activity.findViewById(R.id.layout_father);
       Animation fadeToAlpha = new AlphaAnimation(1f, 0f);
       fadeToAlpha.setDuration(duration);
@@ -41,10 +67,16 @@ public class Sequence {
                      parentViewGroup.getChildAt(i).setClickable(true);
                      parentViewGroup.getChildAt(i).setVisibility(View.INVISIBLE);
                   }
+                  listener.onSequenceFinished();
                }
             });
          }
       }).start();
    }
 
+   public void test(){
+      String str = Math.random() + "hehe";
+      Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
+      listener.onSequenceFinished();
+   }
 }
