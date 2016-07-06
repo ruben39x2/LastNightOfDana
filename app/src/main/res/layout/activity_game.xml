@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="ember.ash.lastnightofdana.GameActivity">
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="this is the rhythm of the night all night all day oh yeah"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dana"
+        android:id="@+id/button_dana"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onClickStartGame"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sam"
+        android:id="@+id/button_sam"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_dana"
+        android:layout_toEndOf="@+id/button_dana"
+        android:onClick="onClickStartGame"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Haymitch"
+        android:id="@+id/button_haymitch"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_sam"
+        android:layout_toEndOf="@+id/button_sam"
+        android:onClick="onClickStartGame"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Liliana"
+        android:id="@+id/button_liliana"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/button_haymitch"
+        android:layout_toEndOf="@+id/button_haymitch"
+        android:onClick="onClickStartGame"/>
+
+</RelativeLayout>
