@@ -17,7 +17,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
+        android:layout_height="140dp"
         android:id="@+id/image_headphones"
         android:src="@drawable/headphones"
         android:visibility="invisible"
@@ -32,7 +32,7 @@
         android:layout_below="@id/image_headphones"
         android:layout_marginTop="10dp"
         android:visibility="invisible"
-        android:text="It is recommendable to use headphones for a better experience. Enjoy the game :)"/>
+        android:text="Use headphones for a better experience"/>
 
     <Button
         android:layout_width="wrap_content"

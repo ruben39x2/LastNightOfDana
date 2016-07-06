@@ -1,6 +1,7 @@
 package ember.ash.lastnightofdana.sequence;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,6 +114,7 @@ public class Sequence {
       imageHeadphones.startAnimation(fade);
       textHeadphones.setVisibility(View.VISIBLE);
       textHeadphones.startAnimation(fade);
+
    }
 
    private void hideHeadphonesAlert(long duration){
@@ -130,6 +132,7 @@ public class Sequence {
       });
       imageHeadphones.startAnimation(fade);
       textHeadphones.startAnimation(fade);
+
    }
 
    private void waitBro(final long duration){

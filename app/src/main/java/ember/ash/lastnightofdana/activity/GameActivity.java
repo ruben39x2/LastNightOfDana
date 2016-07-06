@@ -19,6 +19,8 @@ public class GameActivity extends AppCompatActivity {
 
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
               WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+      FontsOverride.overrideTypefaces(this);
    }
 
    public void onClickStartGame(View view){
