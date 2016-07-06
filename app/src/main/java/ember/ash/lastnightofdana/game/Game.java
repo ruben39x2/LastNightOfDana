@@ -1,14 +1,13 @@
 package ember.ash.lastnightofdana.game;
 
 import android.app.Activity;
-import android.content.Context;
 
 import ember.ash.lastnightofdana.sequence.Sequence;
-import ember.ash.lastnightofdana.sequence.SequenceEnum;
+import static ember.ash.lastnightofdana.sequence.SequenceEnum.*;
 import ember.ash.lastnightofdana.sequence.SequenceQueue;
 
 /**
- * Created by Rubén Montero Vázquez on 06/07/2016
+ * This objects represents a game
  */
 public class Game {
    private Activity activity;
@@ -16,12 +15,13 @@ public class Game {
 
    public Game(Activity activity){
       this.activity = activity;
-      queue.addSequence(new Sequence(SequenceEnum.TEST, activity));
-      queue.addSequence(new Sequence(SequenceEnum.FADE_TO_BLACK, activity));
-      queue.addSequence(new Sequence(SequenceEnum.TEST, activity));
-      queue.addSequence(new Sequence(SequenceEnum.TEST, activity));
+   }
 
-
-
+   public void start(){
+      queue.addSequence(new Sequence(FADE_TO_BLACK, activity));
+      queue.addSequence(new Sequence(SHOW_HEADPHONES_ALERT, activity, 400));
+      queue.addSequence(new Sequence(WAIT, activity, 2500));
+      queue.addSequence(new Sequence(HIDE_HEADPHONES_ALERT, activity, 600));
+      queue.addSequence(new Sequence(TEST, activity));
    }
 }

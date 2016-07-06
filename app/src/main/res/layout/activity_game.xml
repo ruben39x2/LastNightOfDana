@@ -15,6 +15,25 @@
         android:id="@+id/image_background"
         android:src="@drawable/candle"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:id="@+id/image_headphones"
+        android:src="@drawable/headphones"
+        android:visibility="invisible"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_headphones"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/image_headphones"
+        android:layout_marginTop="10dp"
+        android:visibility="invisible"
+        android:text="It is recommendable to use headphones for a better experience. Enjoy the game :)"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,6 +42,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:textColor="#000000"
         android:onClick="onClickStartGame"/>
 
     <Button
@@ -33,6 +53,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/button_dana"
         android:layout_toEndOf="@+id/button_dana"
+        android:textColor="#000000"
         android:onClick="onClickStartGame"/>
 
     <Button
@@ -43,6 +64,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/button_sam"
         android:layout_toEndOf="@+id/button_sam"
+        android:textColor="#000000"
         android:onClick="onClickStartGame"/>
 
     <Button
@@ -53,6 +75,7 @@
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/button_haymitch"
         android:layout_toEndOf="@+id/button_haymitch"
+        android:textColor="#000000"
         android:onClick="onClickStartGame"/>
 
 </RelativeLayout>

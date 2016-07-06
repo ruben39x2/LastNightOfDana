@@ -1,12 +1,7 @@
 package ember.ash.lastnightofdana.sequence;
 
-import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-/**
- * Created by Rubén Montero Vázquez on 06/07/2016
- */
 
 /**
  * There is some important logic about sequences here. Let's explain it.
@@ -40,6 +35,12 @@ public class SequenceQueue {
    private Queue<Sequence> queue = new ConcurrentLinkedQueue<>();
    private boolean isPlaying = false;
 
+   /**
+    * Adds a sequence to this queue. The sequence will be played instantly if queue
+    * is empty and will wait until the execution of other sequences finishes otherwise.
+    *
+    * @param sequence the sequence object to be played
+    */
    public void addSequence(Sequence sequence){
       sequence.setListener(getListener());
       queue.add(sequence);
