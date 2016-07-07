@@ -15,6 +15,15 @@
         android:id="@+id/image_background"
         android:src="@drawable/candle"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_middle_white"
+        android:textColor="#ffffff"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textAlignment="center"/>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="45sp"

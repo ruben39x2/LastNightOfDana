@@ -38,10 +38,12 @@ public class Game {
       queue.addSequence(new Sequence(FADE_VIEW_IN, imageLayer1, (long) 1000));
       queue.addSequence(new Sequence(EXPAND_TEXT_BAR, activity, 1000));
       queue.addSequence(new Sequence(FADE_VIEW_IN, textName, (long) 800));
-      queue.addSequence(new Sequence(WAIT, activity, 1000));
-      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK, imageBackground, (long) 2000));
-      queue.addSequence(new Sequence(WAIT, activity, 1000));
+      queue.addSequence(new Sequence(WAIT, activity, 1500));
+      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK, imageBackground, (long) 2500));
+      queue.addSequence(new Sequence(WAIT, activity, 500));
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK, activity, 1500));
+      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "omg que juapo eres"));
+      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "omg que juapo eres 2"));
 
    }
 

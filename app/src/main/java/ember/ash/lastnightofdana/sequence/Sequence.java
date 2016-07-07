@@ -28,6 +28,7 @@ public class Sequence {
    private long duration;
    private View view;
    private int imageResource;
+   private String text;
 
 
    public Sequence(SequenceEnum type, Activity activity){
@@ -52,6 +53,12 @@ public class Sequence {
       this.type = type;
       this.view = view;
       this.duration = duration;
+   }
+
+   public Sequence(SequenceEnum type, Activity activity, String text){
+      this.type = type;
+      this.activity = activity;
+      this.text = text;
    }
 
    public void setListener(SequenceListener listener){
@@ -87,6 +94,9 @@ public class Sequence {
          case EXPAND_TEXT_BAR:
             expandTextBar();
             break;
+         case NARRATE_TEXT:
+            narrateText();
+            break;
 
 
       }
@@ -113,8 +123,9 @@ public class Sequence {
          @Override
          public void onAnimationEnd(Animation animation) {
             for (int i = 0; i < parentViewGroup.getChildCount(); i++) {
-               parentViewGroup.getChildAt(i).setClickable(true);
-               parentViewGroup.getChildAt(i).setVisibility(View.INVISIBLE);
+               View view = parentViewGroup.getChildAt(i);
+               view.setClickable(true);
+               view.setVisibility(View.INVISIBLE);
             }
             notifyListener();
          }
@@ -202,13 +213,14 @@ public class Sequence {
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            Log.d("HEY", "ENDED");
+            if (view instanceof ImageView) {
+               ((ImageView) view).setImageDrawable(null);
+            }
             view.setVisibility(View.INVISIBLE);
             notifyListener();
          }
       });
       view.startAnimation(fade);
-      Log.d("HEY", "STARTED");
    }
 
    private void setImage(){
@@ -246,5 +258,30 @@ public class Sequence {
       });
       imageBar.setVisibility(View.VISIBLE);
       imageBar.startAnimation(scale);
+   }
+
+   private void narrateText(){
+      final TextView textViewNarration = (TextView) activity.findViewById(R.id.text_middle_white);
+      textViewNarration.setVisibility(View.VISIBLE);
+      new Thread(new Runnable() {
+         @Override
+         public void run() {
+            for (int i = 1; i <= text.length(); i++){
+               final int stringIndexToShow = i;
+               activity.runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                     textViewNarration.setText(text.substring(0, stringIndexToShow));
+                  }
+               });
+               try {
+                  Thread.sleep(77);
+               } catch (InterruptedException e) {
+                  e.printStackTrace();
+               }
+            }
+            notifyListener();
+         }
+      }).start();
    }
 }

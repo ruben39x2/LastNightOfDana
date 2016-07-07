@@ -12,6 +12,7 @@ public enum SequenceEnum {
    FADE_VIEW_TO_BLACK,
    SET_IMAGE,
    FADE_VIEW_IN,
-   EXPAND_TEXT_BAR
+   EXPAND_TEXT_BAR,
+   NARRATE_TEXT
 
 }

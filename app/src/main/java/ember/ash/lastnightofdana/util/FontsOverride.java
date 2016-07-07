@@ -10,6 +10,8 @@ public class FontsOverride {
    public static void overrideTypefaces(Activity activity){
       final String FONT = "crimefighter.ttf";
       try {
+         ((TextView) activity.findViewById(R.id.text_middle_white))
+                 .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((TextView) activity.findViewById(R.id.text_headphones))
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((TextView) activity.findViewById(R.id.text_player_name))
