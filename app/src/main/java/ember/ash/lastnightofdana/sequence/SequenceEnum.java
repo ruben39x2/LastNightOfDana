@@ -10,5 +10,5 @@ public enum SequenceEnum {
    WAIT,
    FADE_FROM_BLACK,
    SET_IMAGE,
-   TEST
+   FADE_IN_IMAGE
 }

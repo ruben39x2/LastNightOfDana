@@ -46,6 +46,13 @@ public class Sequence {
       this.imageResource = imageResource;
    }
 
+   public Sequence(SequenceEnum type, ImageView imageView, int imageResource, long duration){
+      this.type = type;
+      this.imageView = imageView;
+      this.imageResource = imageResource;
+      this.duration = duration;
+   }
+
    public void setListener(SequenceListener listener){
       this.listener = listener;
    }
@@ -65,13 +72,13 @@ public class Sequence {
             waitBro();
             break;
          case FADE_FROM_BLACK:
-            fadeFromBlack(duration);
+            fadeFromBlack();
             break;
          case SET_IMAGE:
             setImage();
             break;
-         case TEST:
-            test();
+         case FADE_IN_IMAGE:
+            fadeInImage();
             break;
       }
    }
@@ -96,7 +103,7 @@ public class Sequence {
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            for (int i = 0; i < parentViewGroup.getChildCount(); i++){
+            for (int i = 0; i < parentViewGroup.getChildCount(); i++) {
                parentViewGroup.getChildAt(i).setClickable(true);
                parentViewGroup.getChildAt(i).setVisibility(View.INVISIBLE);
             }
@@ -166,7 +173,7 @@ public class Sequence {
       }).start();
    }
 
-   private void fadeFromBlack(long duration){
+   private void fadeFromBlack(){
       ImageView imageBackground = (ImageView) activity.findViewById(R.id.image_background);
       Animation fade = new AlphaAnimation(0f, 1f);
       fade.setDuration(duration);
@@ -185,9 +192,20 @@ public class Sequence {
       notifyListener();
    }
 
-   private void test(){
-      String str = Math.random() + "hehe";
-      Toast.makeText(activity, str, Toast.LENGTH_SHORT).show();
-      notifyListener();
+   private void fadeInImage(){
+      imageView.setImageResource(imageResource);
+      imageView.setVisibility(View.VISIBLE);
+      Animation fade = new AlphaAnimation(0f, 1f);
+      Log.d("NENO", "LA ANIMASION EMPESO NO MAS");
+      fade.setDuration(duration);
+      fade.setAnimationListener(new AnimationEndListener() {
+         @Override
+         public void onAnimationEnd(Animation animation) {
+            notifyListener();
+         }
+      });
+      imageView.startAnimation(fade);
    }
+
+
 }
