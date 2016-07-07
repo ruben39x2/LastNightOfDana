@@ -22,7 +22,10 @@
         android:textColor="#ffffff"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_margin="40dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginEnd="50dp"
         android:textAlignment="center"/>
 
     <ImageView
@@ -66,9 +69,9 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:id="@+id/image_headphones"
-        android:src="@drawable/headphones"
+        android:src="@drawable/earphones"
         android:visibility="invisible"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
@@ -82,7 +85,7 @@
         android:layout_marginTop="10dp"
         android:visibility="invisible"
         android:textColor="#ffffff"
-        android:text="Use headphones for a better experience"/>
+        android:text="Use earphones for a better experience"/>
 
     <Button
         android:layout_width="wrap_content"

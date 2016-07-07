@@ -1,6 +1,8 @@
 package ember.ash.lastnightofdana.sequence;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -91,10 +93,17 @@ public class SequenceQueue {
    public void notifySequenceFinished(){
       isPlaying = false;
       if (!queue.isEmpty()) playNextScene();
+
+      /* This is extra cool stuff hehe */
+      // Let's make the white arrow disappear
       activity.findViewById(R.id.layout_father).setOnClickListener(null);
       View middleArrow = activity.findViewById(R.id.image_arrow_middle);
       middleArrow.setVisibility(View.INVISIBLE);
       middleArrow.clearAnimation();
+
+      // And play a cool 'duru'
+      final MediaPlayer mp = MediaPlayer.create(activity, R.raw.click);
+      mp.start();
 
    }
 }

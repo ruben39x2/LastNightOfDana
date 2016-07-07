@@ -256,8 +256,8 @@ public class Sequence {
       Animation scale = new ScaleAnimation(
               0f, 1f, // Start and end values for the X axis scaling
               1f, 1f, // Start and end values for the Y axis scaling
-              Animation.RELATIVE_TO_SELF, 1f, // Pivot point of X scaling
-              Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+              Animation.RELATIVE_TO_PARENT, 1f, // Pivot point of X scaling
+              Animation.RELATIVE_TO_PARENT, 0f); // Pivot point of Y scaling
       scale.setFillAfter(true); // Needed to keep the result of the animation
       scale.setDuration(duration);
       scale.setAnimationListener(new AnimationEndListener() {
@@ -286,7 +286,7 @@ public class Sequence {
                   }
                });
                try {
-                  Thread.sleep(50);
+                  Thread.sleep(35);
                } catch (InterruptedException e) {
                   e.printStackTrace();
                }
