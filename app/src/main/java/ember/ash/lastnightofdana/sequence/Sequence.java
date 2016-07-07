@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +26,14 @@ public class Sequence {
    private SequenceListener listener;
    private boolean listenerNotified = false;
    private long duration;
-   private ImageView imageView;
+   private View view;
    private int imageResource;
 
 
    public Sequence(SequenceEnum type, Activity activity){
       this.type = type;
       this.activity = activity;
-      this.duration = 3000;
+      this.duration = 1000;
    }
 
    public Sequence(SequenceEnum type, Activity activity, long duration){
@@ -40,16 +42,15 @@ public class Sequence {
       this.duration = duration;
    }
 
-   public Sequence(SequenceEnum type, ImageView imageView, int imageResource){
+   public Sequence(SequenceEnum type, View view, int imageResource){
       this.type = type;
-      this.imageView = imageView;
+      this.view = view;
       this.imageResource = imageResource;
    }
 
-   public Sequence(SequenceEnum type, ImageView imageView, int imageResource, long duration){
+   public Sequence(SequenceEnum type, View view, long duration){
       this.type = type;
-      this.imageView = imageView;
-      this.imageResource = imageResource;
+      this.view = view;
       this.duration = duration;
    }
 
@@ -74,12 +75,20 @@ public class Sequence {
          case FADE_FROM_BLACK:
             fadeFromBlack();
             break;
+         case FADE_VIEW_TO_BLACK:
+            fadeViewToBlack();
+            break;
          case SET_IMAGE:
             setImage();
             break;
-         case FADE_IN_IMAGE:
-            fadeInImage();
+         case FADE_VIEW_IN:
+            fadeInView();
             break;
+         case EXPAND_TEXT_BAR:
+            expandTextBar();
+            break;
+
+
       }
    }
 
@@ -187,16 +196,29 @@ public class Sequence {
       imageBackground.startAnimation(fade);
    }
 
+   private void fadeViewToBlack(){
+      Animation fade = new AlphaAnimation(1f, 0f);
+      fade.setDuration(duration);
+      fade.setAnimationListener(new AnimationEndListener() {
+         @Override
+         public void onAnimationEnd(Animation animation) {
+            Log.d("HEY", "ENDED");
+            view.setVisibility(View.INVISIBLE);
+            notifyListener();
+         }
+      });
+      view.startAnimation(fade);
+      Log.d("HEY", "STARTED");
+   }
+
    private void setImage(){
-      imageView.setImageResource(imageResource);
+      ((ImageView)view).setImageResource(imageResource);
       notifyListener();
    }
 
-   private void fadeInImage(){
-      imageView.setImageResource(imageResource);
-      imageView.setVisibility(View.VISIBLE);
+   private void fadeInView(){
+      view.setVisibility(View.VISIBLE);
       Animation fade = new AlphaAnimation(0f, 1f);
-      Log.d("NENO", "LA ANIMASION EMPESO NO MAS");
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
@@ -204,8 +226,25 @@ public class Sequence {
             notifyListener();
          }
       });
-      imageView.startAnimation(fade);
+      view.startAnimation(fade);
    }
 
-
+   private void expandTextBar(){
+      View imageBar = activity.findViewById(R.id.image_text_helper);
+      Animation scale = new ScaleAnimation(
+              0f, 1f, // Start and end values for the X axis scaling
+              1f, 1f, // Start and end values for the Y axis scaling
+              Animation.RELATIVE_TO_SELF, 1f, // Pivot point of X scaling
+              Animation.RELATIVE_TO_SELF, 0f); // Pivot point of Y scaling
+      scale.setFillAfter(true); // Needed to keep the result of the animation
+      scale.setDuration(duration);
+      scale.setAnimationListener(new AnimationEndListener() {
+         @Override
+         public void onAnimationEnd(Animation animation) {
+            notifyListener();
+         }
+      });
+      imageBar.setVisibility(View.VISIBLE);
+      imageBar.startAnimation(scale);
+   }
 }

@@ -9,6 +9,9 @@ public enum SequenceEnum {
    HIDE_HEADPHONES_ALERT,
    WAIT,
    FADE_FROM_BLACK,
+   FADE_VIEW_TO_BLACK,
    SET_IMAGE,
-   FADE_IN_IMAGE
+   FADE_VIEW_IN,
+   EXPAND_TEXT_BAR
+
 }
