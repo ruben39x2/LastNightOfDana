@@ -1,7 +1,13 @@
 package ember.ash.lastnightofdana.sequence;
 
+import android.app.Activity;
+import android.view.View;
+import android.widget.RelativeLayout;
+
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import ember.ash.lastnightofdana.R;
 
 /**
  * There is some important logic about sequences here. Let's explain it.
@@ -34,6 +40,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class SequenceQueue {
    private Queue<Sequence> queue = new ConcurrentLinkedQueue<>();
    private boolean isPlaying = false;
+   private Activity activity;
+
+   public SequenceQueue(Activity activity){
+      this.activity = activity;
+   }
 
    /**
     * Adds a sequence to this queue. The sequence will be played instantly if queue
@@ -59,6 +70,31 @@ public class SequenceQueue {
             isPlaying = false;
             if (!queue.isEmpty()) playNextScene();
          }
+
+         @Override
+         public void onSequenceWaiting() {
+            activity.findViewById(R.id.layout_father).setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                  notifySequenceFinished();
+               }
+            });
+         }
       };
+   }
+
+   /**
+    * This is called when the screen hangs for the user to touch it and a onClick event happens.
+    * This triggers moreless the same things that are triggered when a sequence finishes
+    * an onSequenceFinished() is called.
+    */
+   public void notifySequenceFinished(){
+      isPlaying = false;
+      if (!queue.isEmpty()) playNextScene();
+      activity.findViewById(R.id.layout_father).setOnClickListener(null);
+      View middleArrow = activity.findViewById(R.id.image_arrow_middle);
+      middleArrow.setVisibility(View.INVISIBLE);
+      middleArrow.clearAnimation();
+
    }
 }

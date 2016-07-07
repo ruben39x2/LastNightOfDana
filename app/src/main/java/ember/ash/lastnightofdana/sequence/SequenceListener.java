@@ -5,4 +5,6 @@ package ember.ash.lastnightofdana.sequence;
  */
 public interface SequenceListener {
    void onSequenceFinished();
+
+   void onSequenceWaiting();
 }

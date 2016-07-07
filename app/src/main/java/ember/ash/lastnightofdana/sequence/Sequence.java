@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -110,6 +111,15 @@ public class Sequence {
       if (!listenerNotified){
          if (listener != null){
             listener.onSequenceFinished();
+         }
+         listenerNotified = true;
+      }
+   }
+
+   private synchronized void notifyWaiting(){
+      if (!listenerNotified){
+         if (listener != null){
+            listener.onSequenceWaiting();
          }
          listenerNotified = true;
       }
@@ -262,6 +272,7 @@ public class Sequence {
 
    private void narrateText(){
       final TextView textViewNarration = (TextView) activity.findViewById(R.id.text_middle_white);
+      final ImageView imageArrow = (ImageView) activity.findViewById(R.id.image_arrow_middle);
       textViewNarration.setVisibility(View.VISIBLE);
       new Thread(new Runnable() {
          @Override
@@ -275,13 +286,28 @@ public class Sequence {
                   }
                });
                try {
-                  Thread.sleep(77);
+                  Thread.sleep(50);
                } catch (InterruptedException e) {
                   e.printStackTrace();
                }
             }
-            notifyListener();
+            activity.runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                  imageArrow.setVisibility(View.VISIBLE);
+                  imageArrow.startAnimation(getIntermitentAnimation());
+               }
+            });
+            notifyWaiting();
          }
       }).start();
+   }
+
+   private Animation getIntermitentAnimation(){
+      Animation anim = new AlphaAnimation(0f, 1f);
+      anim.setDuration(250);
+      anim.setRepeatCount(Animation.INFINITE);
+      anim.setRepeatMode(Animation.REVERSE);
+      return anim;
    }
 }

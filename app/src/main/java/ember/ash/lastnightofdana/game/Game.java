@@ -15,10 +15,11 @@ import ember.ash.lastnightofdana.sequence.SequenceQueue;
  */
 public class Game {
    private Activity activity;
-   private SequenceQueue queue = new SequenceQueue();
+   private SequenceQueue queue;
 
    public Game(Activity activity){
       this.activity = activity;
+      this.queue = new SequenceQueue(activity);
    }
 
    public void start(){
@@ -33,17 +34,17 @@ public class Game {
       queue.addSequence(new Sequence(HIDE_HEADPHONES_ALERT, activity, 600));
       queue.addSequence(new Sequence(WAIT, activity, 500));
       queue.addSequence(new Sequence(SET_IMAGE, imageBackground, R.drawable.mansion));
-      queue.addSequence(new Sequence(FADE_FROM_BLACK, activity, 1000));
+      queue.addSequence(new Sequence(FADE_FROM_BLACK, activity, 800));
       queue.addSequence(new Sequence(SET_IMAGE, imageLayer1, R.drawable.dana1));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, imageLayer1, (long) 1000));
+      queue.addSequence(new Sequence(FADE_VIEW_IN, imageLayer1, (long) 800));
       queue.addSequence(new Sequence(EXPAND_TEXT_BAR, activity, 1000));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, textName, (long) 800));
+      queue.addSequence(new Sequence(FADE_VIEW_IN, textName, (long) 500));
       queue.addSequence(new Sequence(WAIT, activity, 1500));
-      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK, imageBackground, (long) 2500));
+      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK, imageBackground, (long) 1500));
       queue.addSequence(new Sequence(WAIT, activity, 500));
-      queue.addSequence(new Sequence(FADE_ALL_TO_BLACK, activity, 1500));
-      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "omg que juapo eres"));
-      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "omg que juapo eres 2"));
+      queue.addSequence(new Sequence(FADE_ALL_TO_BLACK, activity, 1000));
+      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "You are Dana, a young wealthy lady whose father is the lord of the county"));
+      queue.addSequence(new Sequence(NARRATE_TEXT, activity, "You have always lived very protected, but you know that an important fate awaits you"));
 
    }
 
