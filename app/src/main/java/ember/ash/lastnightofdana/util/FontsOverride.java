@@ -17,6 +17,8 @@ public class FontsOverride {
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((TextView) activity.findViewById(R.id.text_player_name))
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
+         ((TextView) activity.findViewById(R.id.text_dialog))
+                 .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          //((TextView) activity.findViewById(R.id.text_title))
            //      .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((Button) activity.findViewById(R.id.button_play))

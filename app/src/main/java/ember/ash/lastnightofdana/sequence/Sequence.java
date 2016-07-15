@@ -110,6 +110,9 @@ public class Sequence {
          case PLAY_DOOR_SOUND:
             playDoorSound();
             break;
+         case DIALOG_TEXT:
+            dialogText();
+            break;
       }
    }
 
@@ -126,10 +129,19 @@ public class Sequence {
       }
    }
 
-   private synchronized void notifyWaiting(){
+   private synchronized void notifyWaitingNarration(){
       if (!listenerNotified){
          if (listener != null){
-            listener.onSequenceWaiting();
+            listener.onSequenceWaitingForNarration();
+         }
+         listenerNotified = true;
+      }
+   }
+
+   private synchronized void notifyWaitingDialog(){
+      if (!listenerNotified){
+         if (listener != null){
+            listener.onSequenceWaitingForDialog();
          }
          listenerNotified = true;
       }
@@ -267,7 +279,7 @@ public class Sequence {
          public void onAnimationEnd(Animation animation) {
             ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.VISIBLE);
             ViewsHolder.getInstance().getArrowMiddle().startAnimation(getIntermitentAnimation());
-            notifyWaiting();
+            notifyWaitingNarration();
          }
       });
       ViewsHolder.getInstance().getTextNarrate().startAnimation(fade);
@@ -286,6 +298,41 @@ public class Sequence {
    private void playDoorSound(){
       Game.getInstance().playDoor();
       notifyListener();
+   }
+
+   private void dialogText(){
+      final TextView textDialog = ViewsHolder.getInstance().getDialogText();
+      final ImageView imageArrow = ViewsHolder.getInstance().getArrowDialog();
+      final View layoutDialog = ViewsHolder.getInstance().getLayoutDialogText();
+      layoutDialog.setVisibility(View.VISIBLE);
+      new Thread(new Runnable() {
+         @Override
+         public void run() {
+            for (int i = 1; i <= text.length(); i++){
+               final int stringIndexToShow = i;
+               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                     textDialog.setText(text.substring(0, stringIndexToShow));
+                  }
+               });
+               try {
+                  Thread.sleep(35);
+               } catch (InterruptedException e) {
+                  e.printStackTrace();
+               }
+            }
+            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                  imageArrow.setVisibility(View.VISIBLE);
+                  imageArrow.startAnimation(getIntermitentAnimation());
+               }
+            });
+            notifyWaitingDialog();
+         }
+      }).start();
+
    }
 
 /* diogenes for the win

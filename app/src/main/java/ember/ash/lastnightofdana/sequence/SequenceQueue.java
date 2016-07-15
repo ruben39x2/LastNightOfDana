@@ -72,11 +72,21 @@ public class SequenceQueue {
          }
 
          @Override
-         public void onSequenceWaiting() {
+         public void onSequenceWaitingForNarration() {
             ViewsHolder.getInstance().getViewFather().setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                  notifySequenceFinished();
+                  notifySequenceNarrationFinished();
+               }
+            });
+         }
+
+         @Override
+         public void onSequenceWaitingForDialog() {
+            ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                  notifySequenceDialogFinished();
                }
             });
          }
@@ -88,26 +98,42 @@ public class SequenceQueue {
     * This triggers moreless the same things that are triggered when a sequence finishes
     * an onSequenceFinished() is called.
     */
-   public void notifySequenceFinished(){
+   public void notifySequenceNarrationFinished(){
       // Play a cool 'duru'
       Game.getInstance().playClick();
 
-      //final MediaPlayer mp = MediaPlayer.create(Game.getInstance().getActivity(), R.raw.click);
-      //mp.start();
-
+      // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
       isPlaying = false;
       if (!queue.isEmpty()) playNextScene();
 
       /* This is extra cool stuff hehe */
       // Clean the narration text
-      //ViewsHolder.getInstance().getTextNarrate().setVisibility(View.GONE);
       ViewsHolder.getInstance().getArrowMiddle().clearAnimation();
       ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.GONE);
 
       // Remove the listener from the screen
       ViewsHolder.getInstance().getViewFather().setOnClickListener(null);
+      ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(null);
+   }
 
+   /**
+    * This is called when the screen hangs for the user to touch it and a onClick event happens.
+    * This triggers moreless the same things that are triggered when a sequence finishes
+    * an onSequenceFinished() is called.
+    */
+   public void notifySequenceDialogFinished(){
+      // Play a cool 'duru'
+      Game.getInstance().playClick();
 
+      // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
+      isPlaying = false;
+      if (!queue.isEmpty()) playNextScene();
 
+      // If we are waiting because of a dialog text... let's do cool stuff too
+      ViewsHolder.getInstance().getArrowDialog().clearAnimation();
+      ViewsHolder.getInstance().getArrowDialog().setVisibility(View.GONE);
+
+      // Remove the listener from the dialog
+      ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(null);
    }
 }

@@ -14,6 +14,7 @@ import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.sequence.Sequence;
 import ember.ash.lastnightofdana.sequence.SequenceQueue;
 
+import static ember.ash.lastnightofdana.sequence.SequenceEnum.DIALOG_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_ALL_TO_BLACK;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_IN;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_TO_BLACK;
@@ -151,6 +152,8 @@ public class Game {
       queue.addSequence(new Sequence(FADE_VIEW_IN)
               .setView(ViewsHolder.getInstance().getImageLayer2())
               .setDuration(800));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText("Maid:\nHey there niggaaaa!"));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText("Maid:\nwanna die bro?"));
 
 
       //queue.addSequence(new Sequence(SET_IMAGE)

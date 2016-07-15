@@ -14,8 +14,9 @@ public class ViewsHolder {
    private TextView textHeadphones;
    private View imageBackground;
    private View imageLayer1, imageLayer2, imageLayer3;
-   private TextView textNarrate;
-   private ImageView imageArrowMiddle;
+   private TextView textNarrate, textDialog;
+   private ImageView imageArrowMiddle, imageArrowDialog;
+   private View layoutDialogText;
 
    private View imageMiddleBar;
 
@@ -87,6 +88,22 @@ public class ViewsHolder {
       return imageLayer3;
    }
 
+   public View getLayoutDialogText(){
+      if (layoutDialogText == null){
+         layoutDialogText = Game.getInstance().getActivity().findViewById(R.id.layout_dialog);
+      }
+      return layoutDialogText;
+   }
+
+   public TextView getDialogText(){
+      if (textDialog == null){
+         textDialog = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_dialog);
+      }
+      return textDialog;
+   }
+
+
+
 
 
 
@@ -109,6 +126,13 @@ public class ViewsHolder {
          imageArrowMiddle = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
       }
       return imageArrowMiddle;
+   }
+
+   public ImageView getArrowDialog(){
+      if (imageArrowDialog == null){
+         imageArrowDialog = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_dialog);
+      }
+      return imageArrowDialog;
    }
 
 
