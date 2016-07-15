@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
+import ember.ash.lastnightofdana.game.ViewsHolder;
 import ember.ash.lastnightofdana.util.FontsOverride;
 
 public class GameActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class GameActivity extends AppCompatActivity {
 
       FontsOverride.overrideTypefaces(this);
       Game.getInstance().setActivity(this);
+      Game.getInstance().loadSounds();
    }
 
    public void onClickStartGame(View view){
@@ -28,6 +30,7 @@ public class GameActivity extends AppCompatActivity {
    }
 
    private void startGameDana(){
+      ViewsHolder.clearViews();
       Game.getInstance().start();
    }
 }

@@ -1,6 +1,9 @@
 package ember.ash.lastnightofdana.game;
 
 import android.app.Activity;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.sequence.Sequence;
@@ -20,6 +23,8 @@ public class Game {
    private static Game ourInstance = new Game();
    private Activity activity;
    private SequenceQueue queue;
+   private SoundPool soundPool;
+   private int idClickSound;
 
    public static Game getInstance() {
       return ourInstance;
@@ -36,8 +41,17 @@ public class Game {
       return activity;
    }
 
+   public void loadSounds(){
+      soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
+      idClickSound = soundPool.load(activity, R.raw.click, 0);
+   }
+
+   public void playClick(){
+      soundPool.play(idClickSound, 1, 1, 1, 0, 1);
+   }
+
    public void start(){
-      this.queue = new SequenceQueue(activity);
+      this.queue = new SequenceQueue();
       ViewsHolder.getInstance().getTextName().setText("Dana");
 
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(2000));
@@ -69,6 +83,14 @@ public class Game {
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(1000));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText("You are Dana, a young wealthy lady whose father is the lord of the county"));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText("You have always lived very protected, but you know that an important fate awaits you"));
-
+      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK)
+              .setView(ViewsHolder.getInstance().getTextNarrate())
+              .setDuration(500));
+      queue.addSequence(new Sequence(SET_IMAGE)
+              .setView(ViewsHolder.getInstance().getImageBackground())
+              .setImageResource(R.drawable.restroom));
+      queue.addSequence(new Sequence(FADE_VIEW_IN)
+              .setView(ViewsHolder.getInstance().getImageBackground())
+              .setDuration(1500));
    }
 }

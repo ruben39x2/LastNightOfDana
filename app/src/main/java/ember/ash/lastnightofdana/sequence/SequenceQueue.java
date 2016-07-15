@@ -3,6 +3,7 @@ package ember.ash.lastnightofdana.sequence;
 import android.app.Activity;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -10,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.game.Game;
 import ember.ash.lastnightofdana.game.ViewsHolder;
 
 /**
@@ -43,11 +45,6 @@ import ember.ash.lastnightofdana.game.ViewsHolder;
 public class SequenceQueue {
    private Queue<Sequence> queue = new ConcurrentLinkedQueue<>();
    private boolean isPlaying = false;
-   private Activity activity;
-
-   public SequenceQueue(Activity activity){
-      this.activity = activity;
-   }
 
    /**
     * Adds a sequence to this queue. The sequence will be played instantly if queue
@@ -92,19 +89,25 @@ public class SequenceQueue {
     * an onSequenceFinished() is called.
     */
    public void notifySequenceFinished(){
+      // Play a cool 'duru'
+      Game.getInstance().playClick();
+
+      //final MediaPlayer mp = MediaPlayer.create(Game.getInstance().getActivity(), R.raw.click);
+      //mp.start();
+
       isPlaying = false;
       if (!queue.isEmpty()) playNextScene();
 
       /* This is extra cool stuff hehe */
-      // Let's make the white arrow disappear
-      activity.findViewById(R.id.layout_father).setOnClickListener(null);
-      View middleArrow = activity.findViewById(R.id.image_arrow_middle);
-      middleArrow.setVisibility(View.INVISIBLE);
-      middleArrow.clearAnimation();
+      // Clean the narration text
+      //ViewsHolder.getInstance().getTextNarrate().setVisibility(View.GONE);
+      ViewsHolder.getInstance().getArrowMiddle().clearAnimation();
+      ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.GONE);
 
-      // And play a cool 'duru'
-      final MediaPlayer mp = MediaPlayer.create(activity, R.raw.click);
-      mp.start();
+      // Remove the listener from the screen
+      ViewsHolder.getInstance().getViewFather().setOnClickListener(null);
+
+
 
    }
 }

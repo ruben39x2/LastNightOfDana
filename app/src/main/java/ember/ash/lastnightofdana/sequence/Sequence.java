@@ -239,6 +239,27 @@ public class Sequence {
    }
 
    private void narrateText(){
+      ViewsHolder.getInstance().getTextNarrate().setVisibility(View.VISIBLE);
+      ViewsHolder.getInstance().getTextNarrate().setText(text);
+      Animation fade = new AlphaAnimation(0f, 1f);
+      fade.setDuration(500);
+      fade.setAnimationListener(new AnimationEndListener() {
+         @Override
+         public void onAnimationEnd(Animation animation) {
+            ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.VISIBLE);
+            ViewsHolder.getInstance().getArrowMiddle().startAnimation(getIntermitentAnimation());
+            notifyWaiting();
+         }
+      });
+      ViewsHolder.getInstance().getTextNarrate().startAnimation(fade);
+
+
+
+   }
+
+
+/* diogenes for the win
+   private void narrateText(){
       final TextView textViewNarration = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
       final ImageView imageArrow = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
       textViewNarration.setVisibility(View.VISIBLE);
@@ -270,6 +291,39 @@ public class Sequence {
          }
       }).start();
    }
+
+   private void narrateText(){
+      final TextView textViewNarration = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
+      final ImageView imageArrow = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
+      textViewNarration.setVisibility(View.VISIBLE);
+      new Thread(new Runnable() {
+         @Override
+         public void run() {
+            for (int i = 1; i <= text.length(); i++){
+               final int stringIndexToShow = i;
+               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                     textViewNarration.setText(text.substring(0, stringIndexToShow));
+                  }
+               });
+               try {
+                  Thread.sleep(35);
+               } catch (InterruptedException e) {
+                  e.printStackTrace();
+               }
+            }
+            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                  imageArrow.setVisibility(View.VISIBLE);
+                  imageArrow.startAnimation(getIntermitentAnimation());
+               }
+            });
+            notifyWaiting();
+         }
+      }).start();
+   }*/
 
    private Animation getIntermitentAnimation(){
       Animation anim = new AlphaAnimation(0f, 1f);

@@ -1,8 +1,7 @@
 package ember.ash.lastnightofdana.game;
 
-import android.app.Activity;
-import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ember.ash.lastnightofdana.R;
@@ -15,11 +14,17 @@ public class ViewsHolder {
    private TextView textHeadphones;
    private View imageBackground;
    private View imageLayer1;
+   private TextView textNarrate;
+   private ImageView imageArrowMiddle;
 
    private View imageMiddleBar;
 
    public static ViewsHolder getInstance() {
       return ourInstance;
+   }
+
+   public static void clearViews(){
+      ourInstance = new ViewsHolder();
    }
 
    private ViewsHolder() {
@@ -76,6 +81,20 @@ public class ViewsHolder {
          imageMiddleBar = Game.getInstance().getActivity().findViewById(R.id.image_middle_bar);
       }
       return imageMiddleBar;
+   }
+
+   public TextView getTextNarrate(){
+      if (textNarrate == null){
+         textNarrate = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
+      }
+      return textNarrate;
+   }
+
+   public ImageView getArrowMiddle(){
+      if (imageArrowMiddle == null){
+         imageArrowMiddle = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
+      }
+      return imageArrowMiddle;
    }
 
 
