@@ -8,4 +8,12 @@
     <string name="dana">Dana</string>
     <string name="art_by">Art by:\nSara Piñeiro</string>
     <string name="programmed_by">Programmed by:\nRubén Montero</string>
+    <string name="dana_intro3">Maid:\nGood morning, milady. Wake up.</string>
+    <string name="dana_intro4">Maid:\nTonight the feast convoked by your father will\ntake place</string>
+    <string name="dana_intro5">You:\nToday?</string>
+    <string name="dana_intro6">Maid:\nYes, it is. A lot of people will assist.</string>
+    <string name="dana_intro7">Maid:\nAnd now, please, dress up. Lord Haymitch has\ncome and wants to see you.</string>
+    <string name="dana_intro8">Maid:\nThat young man has been watching over you a lot recently.</string>
+    <string name="dana_intro9">You:\nLord Haymitch wants to see me? Now?</string>
+    <string name="dana_intro10">Maid:\nYes.</string>
 </resources>

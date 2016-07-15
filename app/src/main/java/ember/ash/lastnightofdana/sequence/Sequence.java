@@ -1,20 +1,13 @@
 package ember.ash.lastnightofdana.sequence;
 
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
 import ember.ash.lastnightofdana.game.ViewsHolder;
 
@@ -32,7 +25,7 @@ public class Sequence {
    private int imageResource;
    private String text;
    private int musicId;
-   private boolean looping;
+   private boolean looping, asynchronous;
 
    public Sequence(SequenceEnum type){
       this.type = type;
@@ -68,6 +61,11 @@ public class Sequence {
       return this;
    }
 
+   public Sequence setAsynchronous(){
+      this.asynchronous = true;
+      return this;
+   }
+
    public void setListener(SequenceListener listener){
       this.listener = listener;
    }
@@ -86,14 +84,14 @@ public class Sequence {
          case WAIT:
             waitBro();
             break;
-         case FADE_VIEW_TO_BLACK:
-            fadeViewToBlack();
+         case FADE_VIEW_OUT:
+            fadeViewOut();
             break;
          case SET_IMAGE:
             setImage();
             break;
          case FADE_VIEW_IN:
-            fadeInView();
+            fadeViewIn();
             break;
          case SLIDE_VIEW_IN:
             slideInView();
@@ -223,7 +221,7 @@ public class Sequence {
       }).start();
    }
 
-   private void fadeViewToBlack(){
+   private void fadeViewOut(){
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
@@ -237,6 +235,7 @@ public class Sequence {
          }
       });
       view.startAnimation(fade);
+      if (asynchronous) notifyListener();
    }
 
    private void setImage(){
@@ -244,7 +243,7 @@ public class Sequence {
       notifyListener();
    }
 
-   private void fadeInView(){
+   private void fadeViewIn(){
       view.setVisibility(View.VISIBLE);
       Animation fade = new AlphaAnimation(0f, 1f);
       fade.setDuration(duration);
@@ -304,6 +303,7 @@ public class Sequence {
       final TextView textDialog = ViewsHolder.getInstance().getDialogText();
       final ImageView imageArrow = ViewsHolder.getInstance().getArrowDialog();
       final View layoutDialog = ViewsHolder.getInstance().getLayoutDialogText();
+      textDialog.setText("");
       layoutDialog.setVisibility(View.VISIBLE);
       new Thread(new Runnable() {
          @Override

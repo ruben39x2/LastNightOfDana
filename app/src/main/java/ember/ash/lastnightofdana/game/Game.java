@@ -4,11 +4,6 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
-
-import java.io.IOException;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.sequence.Sequence;
@@ -17,7 +12,7 @@ import ember.ash.lastnightofdana.sequence.SequenceQueue;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.DIALOG_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_ALL_TO_BLACK;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_IN;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_TO_BLACK;
+import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_OUT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.HIDE_HEADPHONES_ALERT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.NARRATE_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_BACKGROUND_MUSIC;
@@ -117,14 +112,14 @@ public class Game {
               .setDuration(600));
       queue.addSequence(new Sequence(SLIDE_VIEW_IN).setView(ViewsHolder.getInstance().getTextName()));
       queue.addSequence(new Sequence(WAIT).setDuration(1500));
-      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK)
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
               .setView(ViewsHolder.getInstance().getImageBackground())
               .setDuration(1500));
       queue.addSequence(new Sequence(WAIT).setDuration(500));
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(1000));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro1)));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro2)));
-      queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK)
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
               .setView(ViewsHolder.getInstance().getTextNarrate())
               .setDuration(500));
       queue.addSequence(new Sequence(SET_IMAGE)
@@ -152,8 +147,40 @@ public class Game {
       queue.addSequence(new Sequence(FADE_VIEW_IN)
               .setView(ViewsHolder.getInstance().getImageLayer2())
               .setDuration(800));
-      queue.addSequence(new Sequence(DIALOG_TEXT).setText("Maid:\nHey there niggaaaa!"));
-      queue.addSequence(new Sequence(DIALOG_TEXT).setText("Maid:\nwanna die bro?"));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro3)));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro4)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(WAIT).setDuration(1000));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setDuration(200));
+      queue.addSequence(new Sequence(SET_IMAGE)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setImageResource(R.drawable.dana_sitting_bed));
+      queue.addSequence(new Sequence(FADE_VIEW_IN)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setDuration(400));
+      queue.addSequence(new Sequence(WAIT).setDuration(1000));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro5)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro6)));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro7)));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro8)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro9)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro10)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
 
 
       //queue.addSequence(new Sequence(SET_IMAGE)
