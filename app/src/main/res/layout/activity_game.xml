@@ -13,8 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image_background"
-        android:src="@drawable/candle"/>
+        android:src="@drawable/farolilloprueba"/>
 
+    <!--<VideoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/video_view"/>
+    -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,17 +88,64 @@
         android:layout_below="@id/image_headphones"
         android:layout_marginTop="10dp"
         android:visibility="gone"
-        android:textColor="#ffffff"
-        android:text="Use earphones for a better experience"/>
+        android:textColor="#fff"
+        android:text="@string/earphones_better"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Play"
         android:id="@+id/button_play"
+        android:background="#fff"
+        android:text="@string/button_start"
+        android:textSize="20sp"
+        android:layout_margin="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onClickStartGame"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/art_by"
+        android:textColor="#fff"
+        android:textAlignment="center"
+        android:textSize="8sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"/>
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="#99000000">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_title"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:text="Last night of Dana"
+        android:textSize="35dp"
+        android:textColor="#fff"/>
+
+</RelativeLayout>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/programmed_by"
+        android:textColor="#fff"
+        android:textAlignment="center"
+        android:textSize="8sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"/>
 
 </RelativeLayout>

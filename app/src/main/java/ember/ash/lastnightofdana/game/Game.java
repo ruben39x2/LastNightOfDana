@@ -52,7 +52,7 @@ public class Game {
 
    public void start(){
       this.queue = new SequenceQueue();
-      ViewsHolder.getInstance().getTextName().setText("Dana");
+      ViewsHolder.getInstance().getTextName().setText(R.string.dana);
 
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(2000));
       queue.addSequence(new Sequence(SHOW_HEADPHONES_ALERT).setDuration(400));
@@ -81,8 +81,8 @@ public class Game {
               .setDuration(1500));
       queue.addSequence(new Sequence(WAIT).setDuration(500));
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(1000));
-      queue.addSequence(new Sequence(NARRATE_TEXT).setText("You are Dana, a young wealthy lady whose father is the lord of the county"));
-      queue.addSequence(new Sequence(NARRATE_TEXT).setText("You have always lived very protected, but you know that an important fate awaits you"));
+      queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro1)));
+      queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro2)));
       queue.addSequence(new Sequence(FADE_VIEW_TO_BLACK)
               .setView(ViewsHolder.getInstance().getTextNarrate())
               .setDuration(500));
@@ -92,5 +92,14 @@ public class Game {
       queue.addSequence(new Sequence(FADE_VIEW_IN)
               .setView(ViewsHolder.getInstance().getImageBackground())
               .setDuration(1500));
+      queue.addSequence(new Sequence(SET_IMAGE)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setImageResource(R.drawable.dana_lying_bed));
+      queue.addSequence(new Sequence(FADE_VIEW_IN)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setDuration(1500));
+      queue.addSequence(new Sequence(SET_IMAGE)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setImageResource(R.drawable.dana_sitting_bed));
    }
 }
