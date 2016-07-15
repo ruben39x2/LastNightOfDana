@@ -13,7 +13,7 @@ public class ViewsHolder {
    private View imageHeadphones;
    private TextView textHeadphones;
    private View imageBackground;
-   private View imageLayer1;
+   private View imageLayer1, imageLayer2, imageLayer3;
    private TextView textNarrate;
    private ImageView imageArrowMiddle;
 
@@ -71,6 +71,20 @@ public class ViewsHolder {
          imageLayer1 = Game.getInstance().getActivity().findViewById(R.id.image_layer1);
       }
       return imageLayer1;
+   }
+
+   public View getImageLayer2(){
+      if (imageLayer2 == null){
+         imageLayer2 = Game.getInstance().getActivity().findViewById(R.id.image_layer2);
+      }
+      return imageLayer2;
+   }
+
+   public View getImageLayer3(){
+      if (imageLayer3 == null){
+         imageLayer3 = Game.getInstance().getActivity().findViewById(R.id.image_layer3);
+      }
+      return imageLayer3;
    }
 
 

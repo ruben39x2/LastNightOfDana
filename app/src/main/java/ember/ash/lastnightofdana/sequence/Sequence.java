@@ -31,6 +31,8 @@ public class Sequence {
    private View view;
    private int imageResource;
    private String text;
+   private int musicId;
+   private boolean looping;
 
    public Sequence(SequenceEnum type){
       this.type = type;
@@ -53,6 +55,16 @@ public class Sequence {
 
    public Sequence setText(String text){
       this.text = text;
+      return this;
+   }
+
+   public Sequence setMusicId(int musicId){
+      this.musicId = musicId;
+      return this;
+   }
+
+   public Sequence setLooping(boolean looping){
+      this.looping = looping;
       return this;
    }
 
@@ -89,8 +101,15 @@ public class Sequence {
          case NARRATE_TEXT:
             narrateText();
             break;
-
-
+         case PLAY_BACKGROUND_MUSIC:
+            playBackgroundMusic();
+            break;
+         case STOP_BACKGROUND_MUSIC:
+            stopBackgroundMusic();
+            break;
+         case PLAY_DOOR_SOUND:
+            playDoorSound();
+            break;
       }
    }
 
@@ -252,11 +271,22 @@ public class Sequence {
          }
       });
       ViewsHolder.getInstance().getTextNarrate().startAnimation(fade);
-
-
-
    }
 
+   private void playBackgroundMusic(){
+      Game.getInstance().playMusic(musicId, looping);
+      notifyListener();
+   }
+
+   private void stopBackgroundMusic(){
+      Game.getInstance().stopMusic();
+      notifyListener();
+   }
+
+   private void playDoorSound(){
+      Game.getInstance().playDoor();
+      notifyListener();
+   }
 
 /* diogenes for the win
    private void narrateText(){

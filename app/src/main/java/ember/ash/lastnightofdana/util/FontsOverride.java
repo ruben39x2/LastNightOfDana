@@ -17,8 +17,8 @@ public class FontsOverride {
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((TextView) activity.findViewById(R.id.text_player_name))
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
-         ((TextView) activity.findViewById(R.id.text_title))
-                 .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
+         //((TextView) activity.findViewById(R.id.text_title))
+           //      .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((Button) activity.findViewById(R.id.button_play))
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
       } catch (Exception e){ // Save our ass from the evil if something fails loading fonts
