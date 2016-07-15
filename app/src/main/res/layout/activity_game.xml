@@ -36,18 +36,17 @@
         android:layout_below="@id/text_middle_white"
         android:layout_marginTop="5dp"
         android:src="@android:drawable/arrow_down_float"
-        android:visibility="invisible"/>
+        android:visibility="gone"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="45sp"
-        android:id="@+id/image_text_helper"
-        android:scaleType="fitXY"
+        android:id="@+id/image_middle_bar"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/transparent_square"
-        android:visibility="invisible"/>
+        android:background="#000"
+        android:visibility="gone"/>
 
     <ImageView
         android:layout_width="match_parent"
@@ -65,16 +64,16 @@
         android:layout_marginEnd="60dp"
         android:textSize="40sp"
         android:textColor="#ffffff"
-        android:visibility="invisible"/>
+        android:visibility="gone"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/image_headphones"
         android:src="@drawable/earphones"
-        android:visibility="invisible"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,15 +82,16 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/image_headphones"
         android:layout_marginTop="10dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:textColor="#ffffff"
         android:text="Use earphones for a better experience"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Play as Dana"
-        android:id="@+id/button_dana"
+        android:layout_margin="20dp"
+        android:text="Play"
+        android:id="@+id/button_play"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="onClickStartGame"/>

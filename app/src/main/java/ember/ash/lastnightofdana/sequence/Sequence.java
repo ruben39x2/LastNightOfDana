@@ -1,6 +1,5 @@
 package ember.ash.lastnightofdana.sequence;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
@@ -8,6 +7,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -15,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.game.Game;
+import ember.ash.lastnightofdana.game.ViewsHolder;
 
 /**
  * This object represents a playable object. The sequence will be played when
@@ -23,7 +25,6 @@ import ember.ash.lastnightofdana.R;
  */
 public class Sequence {
    private SequenceEnum type;
-   private Activity activity;
    private SequenceListener listener;
    private boolean listenerNotified = false;
    private long duration;
@@ -31,35 +32,28 @@ public class Sequence {
    private int imageResource;
    private String text;
 
-
-   public Sequence(SequenceEnum type, Activity activity){
+   public Sequence(SequenceEnum type){
       this.type = type;
-      this.activity = activity;
-      this.duration = 1000;
    }
 
-   public Sequence(SequenceEnum type, Activity activity, long duration){
-      this.type = type;
-      this.activity = activity;
+   public Sequence setDuration(long duration){
       this.duration = duration;
+      return this;
    }
 
-   public Sequence(SequenceEnum type, View view, int imageResource){
-      this.type = type;
+   public Sequence setView(View view){
       this.view = view;
+      return this;
+   }
+
+   public Sequence setImageResource(int imageResource){
       this.imageResource = imageResource;
+      return this;
    }
 
-   public Sequence(SequenceEnum type, View view, long duration){
-      this.type = type;
-      this.view = view;
-      this.duration = duration;
-   }
-
-   public Sequence(SequenceEnum type, Activity activity, String text){
-      this.type = type;
-      this.activity = activity;
+   public Sequence setText(String text){
       this.text = text;
+      return this;
    }
 
    public void setListener(SequenceListener listener){
@@ -80,9 +74,6 @@ public class Sequence {
          case WAIT:
             waitBro();
             break;
-         case FADE_FROM_BLACK:
-            fadeFromBlack();
-            break;
          case FADE_VIEW_TO_BLACK:
             fadeViewToBlack();
             break;
@@ -92,8 +83,8 @@ public class Sequence {
          case FADE_VIEW_IN:
             fadeInView();
             break;
-         case EXPAND_TEXT_BAR:
-            expandTextBar();
+         case SLIDE_VIEW_IN:
+            slideInView();
             break;
          case NARRATE_TEXT:
             narrateText();
@@ -126,7 +117,7 @@ public class Sequence {
    }
 
    private void fadeAllToBlack(){
-      final ViewGroup parentViewGroup = (ViewGroup) activity.findViewById(R.id.layout_father);
+      final ViewGroup parentViewGroup = (ViewGroup) ViewsHolder.getInstance().getViewFather();
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
@@ -135,7 +126,7 @@ public class Sequence {
             for (int i = 0; i < parentViewGroup.getChildCount(); i++) {
                View view = parentViewGroup.getChildAt(i);
                view.setClickable(true);
-               view.setVisibility(View.INVISIBLE);
+               view.setVisibility(View.GONE);
             }
             notifyListener();
          }
@@ -151,8 +142,6 @@ public class Sequence {
    }
 
    private void showHeadphonesAlert(){
-      ImageView imageHeadphones = (ImageView) activity.findViewById(R.id.image_headphones);
-      TextView textHeadphones = (TextView) activity.findViewById(R.id.text_headphones);
       Animation fade = new AlphaAnimation(0f, 1f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
@@ -161,23 +150,23 @@ public class Sequence {
             notifyListener();
          }
       });
-      imageHeadphones.setVisibility(View.VISIBLE);
-      imageHeadphones.startAnimation(fade);
-      textHeadphones.setVisibility(View.VISIBLE);
-      textHeadphones.startAnimation(fade);
+      ViewsHolder.getInstance().getImageHeadphones().setVisibility(View.VISIBLE);
+      ViewsHolder.getInstance().getImageHeadphones().startAnimation(fade);
+      ViewsHolder.getInstance().getTextHeadphones().setVisibility(View.VISIBLE);
+      ViewsHolder.getInstance().getTextHeadphones().startAnimation(fade);
    }
 
    private void hideHeadphonesAlert(){
-      final ImageView imageHeadphones = (ImageView) activity.findViewById(R.id.image_headphones);
-      final TextView textHeadphones = (TextView) activity.findViewById(R.id.text_headphones);
+      final View imageHeadphones = ViewsHolder.getInstance().getImageHeadphones();
+      final TextView textHeadphones = ViewsHolder.getInstance().getTextHeadphones();
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
             notifyListener();
-            imageHeadphones.setVisibility(View.INVISIBLE);
-            textHeadphones.setVisibility(View.INVISIBLE);
+            imageHeadphones.setVisibility(View.GONE);
+            textHeadphones.setVisibility(View.GONE);
          }
       });
       imageHeadphones.startAnimation(fade);
@@ -193,7 +182,7 @@ public class Sequence {
             } catch (InterruptedException e) {
                e.printStackTrace();
             }
-            activity.runOnUiThread(new Runnable() {
+            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
                @Override
                public void run() {
                   notifyListener();
@@ -201,20 +190,6 @@ public class Sequence {
             });
          }
       }).start();
-   }
-
-   private void fadeFromBlack(){
-      ImageView imageBackground = (ImageView) activity.findViewById(R.id.image_background);
-      Animation fade = new AlphaAnimation(0f, 1f);
-      fade.setDuration(duration);
-      fade.setAnimationListener(new AnimationEndListener() {
-         @Override
-         public void onAnimationEnd(Animation animation) {
-            notifyListener();
-         }
-      });
-      imageBackground.setVisibility(View.VISIBLE);
-      imageBackground.startAnimation(fade);
    }
 
    private void fadeViewToBlack(){
@@ -226,7 +201,7 @@ public class Sequence {
             if (view instanceof ImageView) {
                ((ImageView) view).setImageDrawable(null);
             }
-            view.setVisibility(View.INVISIBLE);
+            view.setVisibility(View.GONE);
             notifyListener();
          }
       });
@@ -251,35 +226,28 @@ public class Sequence {
       view.startAnimation(fade);
    }
 
-   private void expandTextBar(){
-      View imageBar = activity.findViewById(R.id.image_text_helper);
-      Animation scale = new ScaleAnimation(
-              0f, 1f, // Start and end values for the X axis scaling
-              1f, 1f, // Start and end values for the Y axis scaling
-              Animation.RELATIVE_TO_PARENT, 1f, // Pivot point of X scaling
-              Animation.RELATIVE_TO_PARENT, 0f); // Pivot point of Y scaling
-      scale.setFillAfter(true); // Needed to keep the result of the animation
-      scale.setDuration(duration);
-      scale.setAnimationListener(new AnimationEndListener() {
+   private void slideInView(){
+      view.setVisibility(View.VISIBLE);
+      Animation animation = AnimationUtils.loadAnimation(Game.getInstance().getActivity(), android.R.anim.slide_in_left);
+      animation.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
             notifyListener();
          }
       });
-      imageBar.setVisibility(View.VISIBLE);
-      imageBar.startAnimation(scale);
+      view.startAnimation(animation);
    }
 
    private void narrateText(){
-      final TextView textViewNarration = (TextView) activity.findViewById(R.id.text_middle_white);
-      final ImageView imageArrow = (ImageView) activity.findViewById(R.id.image_arrow_middle);
+      final TextView textViewNarration = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
+      final ImageView imageArrow = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
       textViewNarration.setVisibility(View.VISIBLE);
       new Thread(new Runnable() {
          @Override
          public void run() {
             for (int i = 1; i <= text.length(); i++){
                final int stringIndexToShow = i;
-               activity.runOnUiThread(new Runnable() {
+               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
                      textViewNarration.setText(text.substring(0, stringIndexToShow));
@@ -291,7 +259,7 @@ public class Sequence {
                   e.printStackTrace();
                }
             }
-            activity.runOnUiThread(new Runnable() {
+            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
                @Override
                public void run() {
                   imageArrow.setVisibility(View.VISIBLE);

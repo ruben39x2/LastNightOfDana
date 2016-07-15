@@ -10,6 +10,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.game.ViewsHolder;
 
 /**
  * There is some important logic about sequences here. Let's explain it.
@@ -75,7 +76,7 @@ public class SequenceQueue {
 
          @Override
          public void onSequenceWaiting() {
-            activity.findViewById(R.id.layout_father).setOnClickListener(new View.OnClickListener() {
+            ViewsHolder.getInstance().getViewFather().setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                   notifySequenceFinished();

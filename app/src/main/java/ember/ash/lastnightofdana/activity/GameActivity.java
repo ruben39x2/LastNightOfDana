@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
@@ -21,22 +20,14 @@ public class GameActivity extends AppCompatActivity {
               WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
       FontsOverride.overrideTypefaces(this);
+      Game.getInstance().setActivity(this);
    }
 
    public void onClickStartGame(View view){
-      int id = view.getId();
-      switch (id){
-         case R.id.button_dana:
-            startGameDana();
-            break;
-         default:
-            Toast.makeText(this, "Not available yet", Toast.LENGTH_SHORT).show();
-            break;
-      }
+      startGameDana();
    }
 
    private void startGameDana(){
-      Game game = new Game(this);
-      game.start();
+      Game.getInstance().start();
    }
 }
