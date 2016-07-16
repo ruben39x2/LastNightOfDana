@@ -18,6 +18,7 @@ import static ember.ash.lastnightofdana.sequence.SequenceEnum.NARRATE_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_BACKGROUND_MUSIC;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_DOOR_SOUND;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.SET_IMAGE;
+import static ember.ash.lastnightofdana.sequence.SequenceEnum.SHOW_CHOICES;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.SHOW_HEADPHONES_ALERT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.SLIDE_VIEW_IN;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.STOP_BACKGROUND_MUSIC;
@@ -86,7 +87,11 @@ public class Game {
    public void start(){
       this.queue = new SequenceQueue();
       ViewsHolder.getInstance().getTextName().setText(R.string.dana);
+      playDanaIntro();
+      playDanaScene1();
+   }
 
+   private void playDanaIntro(){
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(2000));
       queue.addSequence(new Sequence(SHOW_HEADPHONES_ALERT).setDuration(400));
       queue.addSequence(new Sequence(WAIT).setDuration(2000));
@@ -117,6 +122,9 @@ public class Game {
               .setDuration(1500));
       queue.addSequence(new Sequence(WAIT).setDuration(500));
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(1000));
+   }
+
+   private void playDanaScene1(){
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro1)));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro2)));
       queue.addSequence(new Sequence(FADE_VIEW_OUT)
@@ -181,10 +189,7 @@ public class Game {
       queue.addSequence(new Sequence(FADE_VIEW_OUT)
               .setView(ViewsHolder.getInstance().getLayoutDialogText())
               .setDuration(500));
-
-
-      //queue.addSequence(new Sequence(SET_IMAGE)
-        //      .setView(ViewsHolder.getInstance().getImageLayer2())
-          //    .setImageResource(R.drawable.dana_sitting_bed));
+      queue.addSequence(new Sequence(WAIT).setDuration(800));
+      queue.addSequence(new Sequence(SHOW_CHOICES).setChoice1("See him").setChoice2("Avoid him"));
    }
 }

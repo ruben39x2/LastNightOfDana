@@ -23,6 +23,10 @@ public class FontsOverride {
            //      .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
          ((Button) activity.findViewById(R.id.button_play))
                  .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
+         ((Button) activity.findViewById(R.id.button_option1))
+                 .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
+         ((Button) activity.findViewById(R.id.button_option2))
+                 .setTypeface(Typeface.createFromAsset(activity.getAssets(), FONT));
       } catch (Exception e){ // Save our ass from the evil if something fails loading fonts
          e.printStackTrace();
       }

@@ -1,6 +1,9 @@
 package ember.ash.lastnightofdana.game;
 
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -8,17 +11,12 @@ import ember.ash.lastnightofdana.R;
 
 public class ViewsHolder {
    private static ViewsHolder ourInstance = new ViewsHolder();
-   private View viewFather;
-   private TextView textName;
-   private View imageHeadphones;
-   private TextView textHeadphones;
-   private View imageBackground;
-   private View imageLayer1, imageLayer2, imageLayer3;
-   private TextView textNarrate, textDialog;
+   private View viewFather, imageHeadphones, imageBackground,
+           imageLayer1, imageLayer2, imageLayer3,
+           layoutDialogText, imageMiddleBar;
+   private TextView textName, textHeadphones, textNarrate, textDialog;
    private ImageView imageArrowMiddle, imageArrowDialog;
-   private View layoutDialogText;
-
-   private View imageMiddleBar;
+   private Button choice1, choice2;
 
    public static ViewsHolder getInstance() {
       return ourInstance;
@@ -102,11 +100,6 @@ public class ViewsHolder {
       return textDialog;
    }
 
-
-
-
-
-
    public View getImageMiddleBar(){
       if (imageMiddleBar == null){
          imageMiddleBar = Game.getInstance().getActivity().findViewById(R.id.image_middle_bar);
@@ -135,5 +128,26 @@ public class ViewsHolder {
       return imageArrowDialog;
    }
 
+   public Button getButtonChoice1(){
+      if (choice1 == null){
+         choice1 = (Button) Game.getInstance().getActivity().findViewById(R.id.button_option1);
+      }
+      return choice1;
+   }
+
+   public Button getButtonChoice2(){
+      if (choice2 == null){
+         choice2 = (Button) Game.getInstance().getActivity().findViewById(R.id.button_option2);
+      }
+      return choice2;
+   }
+
+   public Animation getButtonAnimation(){
+      Animation anim = new AlphaAnimation(0.9f, 0.5f);
+      anim.setDuration(700);
+      anim.setRepeatCount(Animation.INFINITE);
+      anim.setRepeatMode(Animation.REVERSE);
+      return anim;
+   }
 
 }

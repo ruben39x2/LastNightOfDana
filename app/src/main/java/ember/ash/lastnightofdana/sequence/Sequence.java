@@ -23,7 +23,7 @@ public class Sequence {
    private long duration;
    private View view;
    private int imageResource;
-   private String text;
+   private String text, choice1, choice2;
    private int musicId;
    private boolean looping, asynchronous;
 
@@ -63,6 +63,16 @@ public class Sequence {
 
    public Sequence setAsynchronous(){
       this.asynchronous = true;
+      return this;
+   }
+
+   public Sequence setChoice1(String choice1){
+      this.choice1 = choice1 + " "; // hotfix for the win
+      return this;
+   }
+
+   public Sequence setChoice2(String choice2){
+      this.choice2 = choice2 + " "; // problems with the font...
       return this;
    }
 
@@ -110,6 +120,9 @@ public class Sequence {
             break;
          case DIALOG_TEXT:
             dialogText();
+            break;
+         case SHOW_CHOICES:
+            showChoices();
             break;
       }
    }
@@ -332,75 +345,18 @@ public class Sequence {
             notifyWaitingDialog();
          }
       }).start();
-
    }
 
-/* diogenes for the win
-   private void narrateText(){
-      final TextView textViewNarration = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
-      final ImageView imageArrow = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
-      textViewNarration.setVisibility(View.VISIBLE);
-      new Thread(new Runnable() {
-         @Override
-         public void run() {
-            for (int i = 1; i <= text.length(); i++){
-               final int stringIndexToShow = i;
-               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                     textViewNarration.setText(text.substring(0, stringIndexToShow));
-                  }
-               });
-               try {
-                  Thread.sleep(35);
-               } catch (InterruptedException e) {
-                  e.printStackTrace();
-               }
-            }
-            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                  imageArrow.setVisibility(View.VISIBLE);
-                  imageArrow.startAnimation(getIntermitentAnimation());
-               }
-            });
-            notifyWaiting();
-         }
-      }).start();
+   private void showChoices() {
+      ViewsHolder.getInstance().getButtonChoice1().setVisibility(View.VISIBLE);
+      ViewsHolder.getInstance().getButtonChoice1().startAnimation(
+              ViewsHolder.getInstance().getButtonAnimation());
+      ViewsHolder.getInstance().getButtonChoice1().setText(choice1);
+      ViewsHolder.getInstance().getButtonChoice2().setVisibility(View.VISIBLE);
+      ViewsHolder.getInstance().getButtonChoice2().startAnimation(
+              ViewsHolder.getInstance().getButtonAnimation());
+      ViewsHolder.getInstance().getButtonChoice2().setText(choice2);
    }
-
-   private void narrateText(){
-      final TextView textViewNarration = (TextView) Game.getInstance().getActivity().findViewById(R.id.text_middle_white);
-      final ImageView imageArrow = (ImageView) Game.getInstance().getActivity().findViewById(R.id.image_arrow_middle);
-      textViewNarration.setVisibility(View.VISIBLE);
-      new Thread(new Runnable() {
-         @Override
-         public void run() {
-            for (int i = 1; i <= text.length(); i++){
-               final int stringIndexToShow = i;
-               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
-                  @Override
-                  public void run() {
-                     textViewNarration.setText(text.substring(0, stringIndexToShow));
-                  }
-               });
-               try {
-                  Thread.sleep(35);
-               } catch (InterruptedException e) {
-                  e.printStackTrace();
-               }
-            }
-            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                  imageArrow.setVisibility(View.VISIBLE);
-                  imageArrow.startAnimation(getIntermitentAnimation());
-               }
-            });
-            notifyWaiting();
-         }
-      }).start();
-   }*/
 
    private Animation getIntermitentAnimation(){
       Animation anim = new AlphaAnimation(0f, 1f);
