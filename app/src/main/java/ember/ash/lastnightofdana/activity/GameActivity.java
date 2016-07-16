@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
+import ember.ash.lastnightofdana.game.GameLogic;
 import ember.ash.lastnightofdana.game.ViewsHolder;
 import ember.ash.lastnightofdana.util.FontsOverride;
 
@@ -59,7 +60,10 @@ public class GameActivity extends AppCompatActivity {
    }
 
    public void onClickGameChoice(View v){
-      Toast.makeText(this, "you pressed " + ((Button)v).getText() + " ", Toast.LENGTH_SHORT).show();
+      Game.getInstance().playScene(
+              GameLogic.decideSceneToPlay(
+                      Game.getInstance().getCurrentScene(),
+                      v.getId()));
    }
 
    @Override

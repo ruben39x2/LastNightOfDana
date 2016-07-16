@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.sequence.Sequence;
@@ -13,6 +14,7 @@ import static ember.ash.lastnightofdana.sequence.SequenceEnum.DIALOG_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_ALL_TO_BLACK;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_IN;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_OUT;
+import static ember.ash.lastnightofdana.sequence.SequenceEnum.HIDE_CHOICES;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.HIDE_HEADPHONES_ALERT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.NARRATE_TEXT;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_BACKGROUND_MUSIC;
@@ -24,6 +26,24 @@ import static ember.ash.lastnightofdana.sequence.SequenceEnum.SLIDE_VIEW_IN;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.STOP_BACKGROUND_MUSIC;
 import static ember.ash.lastnightofdana.sequence.SequenceEnum.WAIT;
 
+/**
+ * This little lovely class is the heart of the game. It has all the scenes and sequences.
+ * Game.java is a singleton that stores the current scene and has a sequenceQueue (between others)
+ * to play the game. It has a playScene(sceneToPlayEnum) method that changes the currentSceneId
+ * being played and adds to the sequenceQueue the sequences corresponding to that scene.
+ *
+ * How do we get the interactive choices working?
+ *
+ * When user press a choice button, it triggers onClickGameChoice() on the GameActivity.java.
+ * There, we call the GameLogic class with the following parameters:
+ * - button id (which choice)
+ * - current scene being played id (retrieved by this singleton)
+ *
+ * The static method from GameLogic will then return a scene to play, and it will be played
+ * from here, the Game.java class. All the sequences related to that scene will be enqueued and
+ * played.
+ *
+ */
 public class Game {
    private static Game ourInstance = new Game();
    private Activity activity;
@@ -32,6 +52,7 @@ public class Game {
    private int idClickSound, idDoorSound;
    private MediaPlayer mediaPlayer;
    private int currentMusicId;
+   private SceneEnum currentScene;
 
    public static Game getInstance() {
       return ourInstance;
@@ -46,6 +67,10 @@ public class Game {
 
    public Activity getActivity(){
       return activity;
+   }
+
+   public SceneEnum getCurrentScene(){
+      return currentScene;
    }
 
    public void loadSounds(){
@@ -87,8 +112,22 @@ public class Game {
    public void start(){
       this.queue = new SequenceQueue();
       ViewsHolder.getInstance().getTextName().setText(R.string.dana);
-      playDanaIntro();
-      playDanaScene1();
+      playScene(SceneEnum.DANA_INTRO);
+      playScene(SceneEnum.DANA_TALKING_MAID);
+   }
+
+   public void playScene(SceneEnum scene){
+      if (scene == null) {
+         Toast.makeText(activity, "There was an unexpected error :(", Toast.LENGTH_SHORT).show();
+         return;
+      }
+      currentScene = scene; // assign the current scene
+      switch (scene){
+         case DANA_INTRO: playDanaIntro(); break;
+         case DANA_TALKING_MAID: playDanaMaid(); break;
+         case DANA_SEE_HAYMITCH: playDanaSeeHaymitch(); break;
+         case DANA_AVOID_HAYMITCH: playDanaAvoidHaymitch(); break;
+      }
    }
 
    private void playDanaIntro(){
@@ -124,7 +163,7 @@ public class Game {
       queue.addSequence(new Sequence(FADE_ALL_TO_BLACK).setDuration(1000));
    }
 
-   private void playDanaScene1(){
+   private void playDanaMaid(){
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro1)));
       queue.addSequence(new Sequence(NARRATE_TEXT).setText(activity.getString(R.string.dana_intro2)));
       queue.addSequence(new Sequence(FADE_VIEW_OUT)
@@ -163,13 +202,13 @@ public class Game {
       queue.addSequence(new Sequence(WAIT).setDuration(1000));
       queue.addSequence(new Sequence(FADE_VIEW_OUT)
               .setView(ViewsHolder.getInstance().getImageLayer1())
-              .setDuration(200));
+              .setDuration(500));
       queue.addSequence(new Sequence(SET_IMAGE)
               .setView(ViewsHolder.getInstance().getImageLayer1())
               .setImageResource(R.drawable.dana_sitting_bed));
       queue.addSequence(new Sequence(FADE_VIEW_IN)
               .setView(ViewsHolder.getInstance().getImageLayer1())
-              .setDuration(400));
+              .setDuration(500));
       queue.addSequence(new Sequence(WAIT).setDuration(1000));
       queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_intro5)));
       queue.addSequence(new Sequence(FADE_VIEW_OUT)
@@ -190,6 +229,52 @@ public class Game {
               .setView(ViewsHolder.getInstance().getLayoutDialogText())
               .setDuration(500));
       queue.addSequence(new Sequence(WAIT).setDuration(800));
-      queue.addSequence(new Sequence(SHOW_CHOICES).setChoice1("See him").setChoice2("Avoid him"));
+      queue.addSequence(new Sequence(SHOW_CHOICES)
+              .setChoice1(activity.getString(R.string.see_him))
+              .setChoice2(activity.getString(R.string.avoid_him)));
+   }
+
+   private void playDanaSeeHaymitch(){
+      queue.addSequence(new Sequence(HIDE_CHOICES));
+      queue.addSequence(new Sequence(WAIT).setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_see_haymitch1)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_see_haymitch2)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getImageLayer2())
+              .setDuration(1000));
+      queue.addSequence(new Sequence(PLAY_DOOR_SOUND));
+   }
+
+   private void playDanaAvoidHaymitch(){
+      queue.addSequence(new Sequence(HIDE_CHOICES));
+      queue.addSequence(new Sequence(WAIT).setDuration(500));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setDuration(500));
+      queue.addSequence(new Sequence(SET_IMAGE)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setImageResource(R.drawable.dana_lying_bed));
+      queue.addSequence(new Sequence(FADE_VIEW_IN)
+              .setView(ViewsHolder.getInstance().getImageLayer1())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_avoid_haymitch1)));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_avoid_haymitch2)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(DIALOG_TEXT).setText(activity.getString(R.string.dana_avoid_haymitch3)));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getLayoutDialogText())
+              .setDuration(500));
+      queue.addSequence(new Sequence(FADE_VIEW_OUT)
+              .setView(ViewsHolder.getInstance().getImageLayer2())
+              .setDuration(1000));
+      queue.addSequence(new Sequence(PLAY_DOOR_SOUND));
    }
 }

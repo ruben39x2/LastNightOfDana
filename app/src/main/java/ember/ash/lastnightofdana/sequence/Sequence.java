@@ -124,6 +124,9 @@ public class Sequence {
          case SHOW_CHOICES:
             showChoices();
             break;
+         case HIDE_CHOICES:
+            hideChoices();
+            break;
       }
    }
 
@@ -348,14 +351,23 @@ public class Sequence {
    }
 
    private void showChoices() {
+      ViewsHolder.getInstance().getButtonChoice1().setText(choice1);
       ViewsHolder.getInstance().getButtonChoice1().setVisibility(View.VISIBLE);
       ViewsHolder.getInstance().getButtonChoice1().startAnimation(
               ViewsHolder.getInstance().getButtonAnimation());
-      ViewsHolder.getInstance().getButtonChoice1().setText(choice1);
+      ViewsHolder.getInstance().getButtonChoice2().setText(choice2);
       ViewsHolder.getInstance().getButtonChoice2().setVisibility(View.VISIBLE);
       ViewsHolder.getInstance().getButtonChoice2().startAnimation(
               ViewsHolder.getInstance().getButtonAnimation());
-      ViewsHolder.getInstance().getButtonChoice2().setText(choice2);
+      notifyListener();
+   }
+
+   private void hideChoices(){
+      ViewsHolder.getInstance().getButtonChoice1().clearAnimation();
+      ViewsHolder.getInstance().getButtonChoice2().clearAnimation();
+      ViewsHolder.getInstance().getButtonChoice1().setVisibility(View.GONE);
+      ViewsHolder.getInstance().getButtonChoice2().setVisibility(View.GONE);
+      notifyListener();
    }
 
    private Animation getIntermitentAnimation(){
