@@ -1,5 +1,8 @@
 package ember.ash.lastnightofdana.sequence;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -8,8 +11,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
-import ember.ash.lastnightofdana.game.ViewsHolder;
 
 /**
  * This object represents a playable object. The sequence will be played when
@@ -26,9 +29,11 @@ public class Sequence {
    private String text, choice1, choice2;
    private int musicId;
    private boolean looping, asynchronous;
+   private Game game;
 
-   public Sequence(SequenceEnum type){
+   public Sequence(SequenceEnum type, Game game){
       this.type = type;
+      this.game = game;
    }
 
    public Sequence setDuration(long duration){
@@ -73,6 +78,11 @@ public class Sequence {
 
    public Sequence setChoice2(String choice2){
       this.choice2 = choice2 + " "; // problems with the font...
+      return this;
+   }
+
+   public Sequence setGameObject(Game game){
+      this.game = game;
       return this;
    }
 
@@ -127,6 +137,9 @@ public class Sequence {
          case HIDE_CHOICES:
             hideChoices();
             break;
+         case CROSSFADE_VIEW:
+            crossfadeView();
+            break;
       }
    }
 
@@ -162,7 +175,7 @@ public class Sequence {
    }
 
    private void fadeAllToBlack(){
-      final ViewGroup parentViewGroup = (ViewGroup) ViewsHolder.getInstance().getViewFather();
+      final ViewGroup parentViewGroup = game.getLayoutFather();
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
@@ -172,6 +185,7 @@ public class Sequence {
                View view = parentViewGroup.getChildAt(i);
                view.setClickable(true);
                view.setVisibility(View.GONE);
+               //if (view instanceof ImageView) ((ImageView)view).setImageDrawable(null); // clean memory
             }
             notifyListener();
          }
@@ -195,23 +209,25 @@ public class Sequence {
             notifyListener();
          }
       });
-      ViewsHolder.getInstance().getImageHeadphones().setVisibility(View.VISIBLE);
-      ViewsHolder.getInstance().getImageHeadphones().startAnimation(fade);
-      ViewsHolder.getInstance().getTextHeadphones().setVisibility(View.VISIBLE);
-      ViewsHolder.getInstance().getTextHeadphones().startAnimation(fade);
+      game.getImageHeadphones().setImageResource(R.drawable.earphones);
+      game.getImageHeadphones().setVisibility(View.VISIBLE);
+      game.getImageHeadphones().startAnimation(fade);
+      game.getTextHeadphones().setVisibility(View.VISIBLE);
+      game.getTextHeadphones().startAnimation(fade);
    }
 
    private void hideHeadphonesAlert(){
-      final View imageHeadphones = ViewsHolder.getInstance().getImageHeadphones();
-      final TextView textHeadphones = ViewsHolder.getInstance().getTextHeadphones();
+      final ImageView imageHeadphones = game.getImageHeadphones();
+      final TextView textHeadphones = game.getTextHeadphones();
       Animation fade = new AlphaAnimation(1f, 0f);
       fade.setDuration(duration);
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            notifyListener();
             imageHeadphones.setVisibility(View.GONE);
             textHeadphones.setVisibility(View.GONE);
+            imageHeadphones.setImageDrawable(null); //clean memory
+            notifyListener();
          }
       });
       imageHeadphones.startAnimation(fade);
@@ -227,12 +243,14 @@ public class Sequence {
             } catch (InterruptedException e) {
                e.printStackTrace();
             }
-            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
-               @Override
-               public void run() {
-                  notifyListener();
-               }
-            });
+            if (game.getActivity() != null) {
+               game.getActivity().runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                     notifyListener();
+                  }
+               });
+            }
          }
       }).start();
    }
@@ -274,7 +292,7 @@ public class Sequence {
 
    private void slideInView(){
       view.setVisibility(View.VISIBLE);
-      Animation animation = AnimationUtils.loadAnimation(Game.getInstance().getActivity(), android.R.anim.slide_in_left);
+      Animation animation = AnimationUtils.loadAnimation(game.getActivity(), android.R.anim.slide_in_left);
       animation.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
@@ -285,40 +303,40 @@ public class Sequence {
    }
 
    private void narrateText(){
-      ViewsHolder.getInstance().getTextNarrate().setVisibility(View.VISIBLE);
-      ViewsHolder.getInstance().getTextNarrate().setText(text);
+      game.getTextNarrate().setVisibility(View.VISIBLE);
+      game.getTextNarrate().setText(text);
       Animation fade = new AlphaAnimation(0f, 1f);
       fade.setDuration(500);
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.VISIBLE);
-            ViewsHolder.getInstance().getArrowMiddle().startAnimation(getIntermitentAnimation());
+            game.getArrowMiddle().setVisibility(View.VISIBLE);
+            game.getArrowMiddle().startAnimation(getIntermitentAnimation());
             notifyWaitingNarration();
          }
       });
-      ViewsHolder.getInstance().getTextNarrate().startAnimation(fade);
+      game.getTextNarrate().startAnimation(fade);
    }
 
    private void playBackgroundMusic(){
-      Game.getInstance().playMusic(musicId, looping);
+      game.playMusic(musicId, looping);
       notifyListener();
    }
 
    private void stopBackgroundMusic(){
-      Game.getInstance().stopMusic();
+      game.stopMusic();
       notifyListener();
    }
 
    private void playDoorSound(){
-      Game.getInstance().playDoor();
+      game.playDoor();
       notifyListener();
    }
 
    private void dialogText(){
-      final TextView textDialog = ViewsHolder.getInstance().getDialogText();
-      final ImageView imageArrow = ViewsHolder.getInstance().getArrowDialog();
-      final View layoutDialog = ViewsHolder.getInstance().getLayoutDialogText();
+      final TextView textDialog = game.getDialogText();
+      final ImageView imageArrow = game.getArrowDialog();
+      final View layoutDialog = game.getLayoutDialogText();
       textDialog.setText("");
       layoutDialog.setVisibility(View.VISIBLE);
       new Thread(new Runnable() {
@@ -326,7 +344,7 @@ public class Sequence {
          public void run() {
             for (int i = 1; i <= text.length(); i++){
                final int stringIndexToShow = i;
-               Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+               game.getActivity().runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
                      textDialog.setText(text.substring(0, stringIndexToShow));
@@ -338,7 +356,7 @@ public class Sequence {
                   e.printStackTrace();
                }
             }
-            Game.getInstance().getActivity().runOnUiThread(new Runnable() {
+            game.getActivity().runOnUiThread(new Runnable() {
                @Override
                public void run() {
                   imageArrow.setVisibility(View.VISIBLE);
@@ -351,23 +369,54 @@ public class Sequence {
    }
 
    private void showChoices() {
-      ViewsHolder.getInstance().getButtonChoice1().setText(choice1);
-      ViewsHolder.getInstance().getButtonChoice1().setVisibility(View.VISIBLE);
-      ViewsHolder.getInstance().getButtonChoice1().startAnimation(
-              ViewsHolder.getInstance().getButtonAnimation());
-      ViewsHolder.getInstance().getButtonChoice2().setText(choice2);
-      ViewsHolder.getInstance().getButtonChoice2().setVisibility(View.VISIBLE);
-      ViewsHolder.getInstance().getButtonChoice2().startAnimation(
-              ViewsHolder.getInstance().getButtonAnimation());
+      game.getButtonChoice1().setText(choice1);
+      game.getButtonChoice1().setVisibility(View.VISIBLE);
+      game.getButtonChoice1().startAnimation(
+              game.getButtonAnimation());
+      game.getButtonChoice2().setText(choice2);
+      game.getButtonChoice2().setVisibility(View.VISIBLE);
+      game.getButtonChoice2().startAnimation(
+              game.getButtonAnimation());
       notifyListener();
    }
 
    private void hideChoices(){
-      ViewsHolder.getInstance().getButtonChoice1().clearAnimation();
-      ViewsHolder.getInstance().getButtonChoice2().clearAnimation();
-      ViewsHolder.getInstance().getButtonChoice1().setVisibility(View.GONE);
-      ViewsHolder.getInstance().getButtonChoice2().setVisibility(View.GONE);
+      game.getButtonChoice1().clearAnimation();
+      game.getButtonChoice2().clearAnimation();
+      game.getButtonChoice1().setVisibility(View.GONE);
+      game.getButtonChoice2().setVisibility(View.GONE);
       notifyListener();
+   }
+
+   private void crossfadeView(){
+      Drawable[] images = new Drawable[2];
+      images[0] = ((ImageView) view).getDrawable();
+      ((ImageView) view).setImageDrawable(null); // clear the content of the imageview to optimize memory
+      images[1] = ContextCompat.getDrawable(game.getActivity(), imageResource);
+
+      TransitionDrawable crossfader = new TransitionDrawable(images);
+      ((ImageView) view).setImageDrawable(crossfader);
+
+      crossfader.setCrossFadeEnabled(true);
+      crossfader.startTransition((int) duration);
+
+      // ... and wait manually for the end (there is no onCompletionListener for transitionDrawable)
+      new Thread(new Runnable() {
+         @Override
+         public void run() {
+            try {
+               Thread.sleep(duration);
+               game.getActivity().runOnUiThread(new Runnable() {
+                  @Override
+                  public void run() {
+                     notifyListener();
+                  }
+               });
+            } catch (InterruptedException e) {
+               e.printStackTrace();
+            }
+         }
+      }).start();
    }
 
    private Animation getIntermitentAnimation(){

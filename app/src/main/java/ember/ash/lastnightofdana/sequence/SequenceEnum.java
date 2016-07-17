@@ -11,6 +11,7 @@ public enum SequenceEnum {
    FADE_VIEW_OUT,
    SET_IMAGE,
    FADE_VIEW_IN,
+   CROSSFADE_VIEW, // not really used
    SLIDE_VIEW_IN,
    NARRATE_TEXT,
    PLAY_BACKGROUND_MUSIC,

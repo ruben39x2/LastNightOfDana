@@ -1,18 +1,11 @@
 package ember.ash.lastnightofdana.sequence;
 
-import android.app.Activity;
-import android.media.MediaPlayer;
-import android.media.SoundPool;
-import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
-import ember.ash.lastnightofdana.game.ViewsHolder;
 
 /**
  * There is some important logic about sequences here. Let's explain it.
@@ -43,8 +36,17 @@ import ember.ash.lastnightofdana.game.ViewsHolder;
  * Easy :)
  */
 public class SequenceQueue {
+   private Game game;
    private Queue<Sequence> queue = new ConcurrentLinkedQueue<>();
    private boolean isPlaying = false;
+
+   public SequenceQueue(Game game){
+      this.game = game;
+   }
+
+   public void removeAllAndStop(){
+      queue.clear();
+   }
 
    /**
     * Adds a sequence to this queue. The sequence will be played instantly if queue
@@ -73,7 +75,7 @@ public class SequenceQueue {
 
          @Override
          public void onSequenceWaitingForNarration() {
-            ViewsHolder.getInstance().getViewFather().setOnClickListener(new View.OnClickListener() {
+            game.getLayoutFather().setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                   notifySequenceNarrationFinished();
@@ -83,7 +85,7 @@ public class SequenceQueue {
 
          @Override
          public void onSequenceWaitingForDialog() {
-            ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(new View.OnClickListener() {
+            game.getLayoutDialogText().setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                   notifySequenceDialogFinished();
@@ -100,7 +102,7 @@ public class SequenceQueue {
     */
    public void notifySequenceNarrationFinished(){
       // Play a cool 'duru'
-      Game.getInstance().playClick();
+      game.playClick();
 
       // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
       isPlaying = false;
@@ -108,12 +110,12 @@ public class SequenceQueue {
 
       /* This is extra cool stuff hehe */
       // Clean the narration text
-      ViewsHolder.getInstance().getArrowMiddle().clearAnimation();
-      ViewsHolder.getInstance().getArrowMiddle().setVisibility(View.GONE);
+      game.getArrowMiddle().clearAnimation();
+      game.getArrowMiddle().setVisibility(View.GONE);
 
       // Remove the listener from the screen
-      ViewsHolder.getInstance().getViewFather().setOnClickListener(null);
-      ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(null);
+      game.getLayoutFather().setOnClickListener(null);
+      game.getLayoutDialogText().setOnClickListener(null);
    }
 
    /**
@@ -123,17 +125,17 @@ public class SequenceQueue {
     */
    public void notifySequenceDialogFinished(){
       // Play a cool 'duru'
-      Game.getInstance().playClick();
+      game.playClick();
 
       // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
       isPlaying = false;
       if (!queue.isEmpty()) playNextScene();
 
       // If we are waiting because of a dialog text... let's do cool stuff too
-      ViewsHolder.getInstance().getArrowDialog().clearAnimation();
-      ViewsHolder.getInstance().getArrowDialog().setVisibility(View.GONE);
+      game.getArrowDialog().clearAnimation();
+      game.getArrowDialog().setVisibility(View.GONE);
 
       // Remove the listener from the dialog
-      ViewsHolder.getInstance().getLayoutDialogText().setOnClickListener(null);
+      game.getLayoutDialogText().setOnClickListener(null);
    }
 }
