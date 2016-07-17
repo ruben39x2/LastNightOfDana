@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Last night of Dana</string>
-    <string name="action_settings">Settings</string>
     <string name="earphones_better">Use earphones for a better experience</string>
     <string name="button_start">"Start "</string>
     <string name="dana_intro1">You are Dana, a young wealthy lady whose father is the lord of the county</string>
@@ -13,11 +12,11 @@
     <string name="dana_intro5">You:\nToday?</string>
     <string name="dana_intro6">Maid:\nYes, it is. A lot of people will assist.</string>
     <string name="dana_intro7">Maid:\nAnd now, please, dress up. Lord Haymitch has\ncome and wants to see you.</string>
-    <string name="dana_intro8">Maid:\nThat young man has been watching over you a lot recently.</string>
+    <string name="dana_intro8">Maid:\nThat young man has been watching over you a\nlot recently.</string>
     <string name="dana_intro9">You:\nLord Haymitch wants to see me? Now?</string>
     <string name="dana_intro10">Maid:\nYes.</string>
     <string name="see_him">See him</string>
-    <string name="avoid_him">" Avoid him"</string>
+    <string name="avoid_him">Avoid him</string>
     <string name="dana_see_haymitch1">You:\nI will go to the drawing room as soon as\npossible.</string>
     <string name="dana_see_haymitch2">Maid:\nSure, milady.</string>
     <string name="dana_avoid_haymitch1">You:\nI don\'t want to see Lord Haymitch now.</string>

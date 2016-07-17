@@ -87,7 +87,7 @@ public class GameActivity extends AppCompatActivity {
    }
 
    private long randomDuration(){
-      return (long) (Math.random() * 4000);
+      return (long) (Math.random() * 6000);
    }
 
    private void startShootingStars(){

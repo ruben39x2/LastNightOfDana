@@ -14,24 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
-import ember.ash.lastnightofdana.sequence.Sequence;
 import ember.ash.lastnightofdana.sequence.SequenceQueue;
-
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.DIALOG_TEXT;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_ALL_TO_BLACK;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_IN;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.FADE_VIEW_OUT;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.HIDE_CHOICES;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.HIDE_HEADPHONES_ALERT;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.NARRATE_TEXT;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_BACKGROUND_MUSIC;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.PLAY_DOOR_SOUND;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.SET_IMAGE;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.SHOW_CHOICES;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.SHOW_HEADPHONES_ALERT;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.SLIDE_VIEW_IN;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.STOP_BACKGROUND_MUSIC;
-import static ember.ash.lastnightofdana.sequence.SequenceEnum.WAIT;
 
 /**
  * This little lovely class is the heart of the game. It has all the scenes and sequences.
@@ -107,12 +90,16 @@ public class Game {
       mediaPlayer.start();
    }
 
+   public int getIdDoorSound(){
+      return idDoorSound;
+   }
+
    public void playClick(){
       soundPool.play(idClickSound, 1, 1, 1, 0, 1);
    }
 
-   public void playDoor(){
-      soundPool.play(idDoorSound, 1, 1, 1, 0, 1);
+   public void playSound(int id){
+      soundPool.play(id, 1, 1, 1, 0, 1);
    }
 
    public void start(){
@@ -121,6 +108,11 @@ public class Game {
       playScene(SceneEnum.DANA_TALKING_MAID);
    }
 
+   /**
+    * the heart of the game.
+    *
+    * @param scene the scene to play
+    */
    public void playScene(SceneEnum scene){
       if (scene == null) {
          Toast.makeText(activity, "There was an unexpected error :(", Toast.LENGTH_SHORT).show();
@@ -128,181 +120,12 @@ public class Game {
       }
       currentScene = scene; // assign the current scene
       switch (scene){
-         case DANA_INTRO: playDanaIntro(); break;
-         case DANA_TALKING_MAID: playDanaMaid(); break;
-         case DANA_SEE_HAYMITCH: playDanaSeeHaymitch(); break;
-         case DANA_AVOID_HAYMITCH: playDanaAvoidHaymitch(); break;
+         case DANA_INTRO: Scenes.enqueueDanaIntro(this, queue); break;
+         case DANA_TALKING_MAID: Scenes.enqueueDanaMaid(this, queue); break;
+         case DANA_SEE_HAYMITCH: Scenes.enqueueDanaSeeHaymitch(this, queue); break;
+         case DANA_AVOID_HAYMITCH: Scenes.enqueueDanaAvoidHaymitch(this, queue); break;
       }
    }
-
-   private void playDanaIntro(){
-      queue.addSequence(new Sequence(FADE_ALL_TO_BLACK, this).setDuration(2000));
-      queue.addSequence(new Sequence(SHOW_HEADPHONES_ALERT, this).setDuration(400));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(2000));
-      queue.addSequence(new Sequence(HIDE_HEADPHONES_ALERT, this).setDuration(600));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(500));
-      queue.addSequence(new Sequence(PLAY_BACKGROUND_MUSIC, this)
-                      .setMusicId(R.raw.music_dana)
-                      .setLooping(false)
-      );
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-                      .setView(this.getImageBackground())
-                      .setImageResource(R.drawable.mansion)
-      );
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-                      .setView(this.getImageBackground())
-                      .setDuration(2000)
-      );
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-                      .setView(this.getImageLayer1())
-                      .setImageResource(R.drawable.dana1)
-      );
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-                      .setView(this.getImageLayer1())
-                      .setDuration(800)
-      );
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-                      .setView(this.getImageMiddleBar())
-                      .setDuration(600)
-      );
-      queue.addSequence(new Sequence(SLIDE_VIEW_IN, this)
-
-              .setView(this.getTextName()));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(1500));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getImageBackground())
-              .setDuration(1500));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(500));
-      queue.addSequence(new Sequence(FADE_ALL_TO_BLACK, this).setDuration(1000));
-   }
-
-   private void playDanaMaid(){
-      queue.addSequence(new Sequence(NARRATE_TEXT, this).setText(activity.getString(R.string.dana_intro1)));
-      queue.addSequence(new Sequence(NARRATE_TEXT, this).setText(activity.getString(R.string.dana_intro2)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getTextNarrate())
-              .setDuration(500));
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-              .setView(this.getImageBackground())
-              .setImageResource(R.drawable.restroom));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-              .setView(this.getImageBackground())
-              .setDuration(1500));
-      queue.addSequence(new Sequence(STOP_BACKGROUND_MUSIC, this));
-      queue.addSequence(new Sequence(PLAY_BACKGROUND_MUSIC, this)
-                      .setMusicId(R.raw.music_strings1)
-                      .setLooping(true)
-      );
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-              .setView(this.getImageLayer1())
-              .setImageResource(R.drawable.dana_lying_bed));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-              .setView(this.getImageLayer1())
-              .setDuration(1500));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(2000));
-      queue.addSequence(new Sequence(PLAY_DOOR_SOUND, this));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(1000));
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-              .setView(this.getImageLayer2())
-              .setImageResource(R.drawable.maid));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-              .setView(this.getImageLayer2())
-              .setDuration(800));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro3)));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro4)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(1000));
-  /*    queue.addSequence(new Sequence(CROSSFADE_VIEW)
-              .setView(this.getImageLayer1())
-              .setImageResource(R.drawable.dana_sitting_bed)
-              .setDuration(1000)
-              );// this was good, but causes memory exceed on old phones*/
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getImageLayer1())
-              .setDuration(200));
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-              .setView(this.getImageLayer1())
-              .setImageResource(R.drawable.dana_sitting_bed));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-              .setView(this.getImageLayer1())
-              .setDuration(200));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(1000));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro5)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro6)));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro7)));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro8)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro9)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_intro10)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(800));
-      queue.addSequence(new Sequence(SHOW_CHOICES, this)
-              .setChoice1(activity.getString(R.string.see_him))
-              .setChoice2(activity.getString(R.string.avoid_him)));
-   }
-
-   private void playDanaSeeHaymitch(){
-      queue.addSequence(new Sequence(HIDE_CHOICES, this));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_see_haymitch1)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_see_haymitch2)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getImageLayer2())
-              .setDuration(1000));
-      queue.addSequence(new Sequence(PLAY_DOOR_SOUND, this));
-   }
-
-   private void playDanaAvoidHaymitch(){
-      queue.addSequence(new Sequence(HIDE_CHOICES, this));
-      queue.addSequence(new Sequence(WAIT, this).setDuration(500));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getImageLayer1())
-              .setDuration(200));
-      queue.addSequence(new Sequence(SET_IMAGE, this)
-              .setView(this.getImageLayer1())
-              .setImageResource(R.drawable.dana_lying_bed));
-      queue.addSequence(new Sequence(FADE_VIEW_IN, this)
-              .setView(this.getImageLayer1())
-              .setDuration(200));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_avoid_haymitch1)));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_avoid_haymitch2)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(DIALOG_TEXT, this).setText(activity.getString(R.string.dana_avoid_haymitch3)));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getLayoutDialogText())
-              .setDuration(500));
-      queue.addSequence(new Sequence(FADE_VIEW_OUT, this)
-              .setView(this.getImageLayer2())
-              .setDuration(1000));
-      queue.addSequence(new Sequence(PLAY_DOOR_SOUND, this));
-   }
-
-
-
-
-
-
-
 
    public RelativeLayout getLayoutFather(){
       return (RelativeLayout) activity.findViewById(R.id.layout_father);
