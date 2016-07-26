@@ -34,7 +34,7 @@ public class GameActivity extends AppCompatActivity {
       game = new Game(this);
 
       animateStartButton();
-      animateSky();
+      //animateSky();
 
       game.playMusic(R.raw.music_intro, true);
    }
@@ -69,7 +69,7 @@ public class GameActivity extends AppCompatActivity {
          final ImageView star = new ImageView(this);
          star.setImageResource(R.drawable.tiny_star);
          star.setPadding(randomX(), randomY(), 0, 0);
-         game.getLayoutStars().addView(star);
+         //game.getLayoutStars().addView(star);
 
          // fade in the star
          Animation alpha = new AlphaAnimation(0f, 1f);
@@ -112,8 +112,8 @@ public class GameActivity extends AppCompatActivity {
 
    public void onClickStartGame(View view){
       game.stopMusic();
-      game.getLayoutStars().removeAllViews();
-      game.getImageLayer2().setImageDrawable(null);
+//      game.getLayoutStars().removeAllViews();
+//      game.getImageLayer2().setImageDrawable(null);
       startGameDana();
    }
 

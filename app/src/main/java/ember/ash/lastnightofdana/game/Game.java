@@ -122,7 +122,10 @@ public class Game {
       switch (scene){
          case DANA_INTRO: Scenes.enqueueDanaIntro(this, queue); break;
          case DANA_TALKING_MAID: Scenes.enqueueDanaMaid(this, queue); break;
-         case DANA_SEE_HAYMITCH: Scenes.enqueueDanaSeeHaymitch(this, queue); break;
+         case DANA_SEE_HAYMITCH:
+            Scenes.enqueueDanaSeeHaymitch(this, queue);
+            Scenes.enqueueDanaTalkToHaymitch1(this, queue);
+            break;
          case DANA_AVOID_HAYMITCH: Scenes.enqueueDanaAvoidHaymitch(this, queue); break;
       }
    }
@@ -162,7 +165,7 @@ public class Game {
    }
 
    public RelativeLayout getLayoutStars(){
-      return (RelativeLayout) activity.findViewById(R.id.layout_stars);
+      return null;//(RelativeLayout) activity.findViewById(R.id.layout_stars);
    }
 
    public View getLayoutDialogText(){

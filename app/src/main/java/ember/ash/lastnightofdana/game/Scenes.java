@@ -35,10 +35,10 @@ public class Scenes {
       queue.addSequence(new WaitSequence(1500, game));
       queue.addSequence(new FadeViewOutSequence(1500, game.getImageBackground()));
       queue.addSequence(new WaitSequence(500, game));
-      queue.addSequence(new FadeAllToBlackSequence(1000, game));
    }
 
    public static void enqueueDanaMaid(Game game, SequenceQueue queue){
+      queue.addSequence(new FadeAllToBlackSequence(1000, game));
       queue.addSequence(new NarrateTextSequence(game.getActivity().getString(R.string.dana_intro1), game));
       queue.addSequence(new NarrateTextSequence(game.getActivity().getString(R.string.dana_intro2), game));
       queue.addSequence(new FadeViewOutSequence(500, game.getTextNarrate()));
@@ -104,5 +104,12 @@ public class Scenes {
       queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
       queue.addSequence(new FadeViewOutSequence(1000, game.getImageLayer2()));
       queue.addSequence(new PlaySoundSequence(game.getIdDoorSound(), game));
+      queue.addSequence(new WaitSequence(500, game));
+   }
+
+   public static void enqueueDanaTalkToHaymitch1(Game game, SequenceQueue queue){
+      queue.addSequence(new FadeAllToBlackSequence(800, game));
+      queue.addSequence(new StopBackgroundMusicSequence(game));
+      queue.addSequence(new FadeViewInSequence(800, game.getImageBackground()));
    }
 }
