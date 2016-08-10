@@ -1,7 +1,15 @@
 package ember.ash.lastnightofdana.activity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
 import ember.ash.lastnightofdana.game.Game;
@@ -18,13 +27,16 @@ import ember.ash.lastnightofdana.game.GameLogic;
 import ember.ash.lastnightofdana.game.SceneEnum;
 import ember.ash.lastnightofdana.sequence.AnimationEndListener;
 import ember.ash.lastnightofdana.util.FontsOverride;
+import ember.ash.lastnightofdana.util.LogSystem;
 
 public class GameActivity extends AppCompatActivity {
    private Game game;
+   private Activity activity = this;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+
       setContentView(R.layout.activity_game);
 
       getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
@@ -41,7 +53,7 @@ public class GameActivity extends AppCompatActivity {
 
    private void animateStartButton() {
       Button button = (Button)findViewById(R.id.button_play);
-              button.startAnimation(game.getButtonAnimation());
+      button.startAnimation(game.getButtonAnimation());
    }
 
    private void animateSky(){
@@ -140,5 +152,69 @@ public class GameActivity extends AppCompatActivity {
       game.release();
       super.onPause();
       finish();
+   }
+
+   @SuppressLint("NewApi")
+   @SuppressWarnings("deprecation")
+   public boolean copyToClipboard(Context context, String text) {
+      try {
+         int sdk = android.os.Build.VERSION.SDK_INT;
+         if (sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            android.text.ClipboardManager clipboard = (android.text.ClipboardManager) context
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setText(text);
+         } else {
+            android.content.ClipboardManager clipboard = (android.content.ClipboardManager) context
+                    .getSystemService(Context.CLIPBOARD_SERVICE);
+            android.content.ClipData clip = android.content.ClipData
+                    .newPlainText("error", text);
+            clipboard.setPrimaryClip(clip);
+         }
+         return true;
+      } catch (Exception e) {
+         return false;
+      }
+   }
+
+   public void showUncaughtExceptionDialog(final Exception e){
+      AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+      alertDialogBuilder
+              .setCancelable(false)
+              .setTitle("Ooops!")
+              .setMessage("Something unexpected has happened. We apologize for the inconvenience, but the game should be closed. The text of the error has been copied to the clipboard.")
+              .setPositiveButton("Ok, exit :(", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                    game.release();
+                    game.stopMusic();
+                    activity.finish();
+                 }
+              })
+              .setNegativeButton("Try to continue", new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(activity, "Ok, let's go...", Toast.LENGTH_SHORT).show();
+                 }
+              });
+      // Create alert dialog and show it.
+      AlertDialog alertDialog = alertDialogBuilder.create();
+      alertDialog.show();
+      // Copy error to clipboard
+      copyToClipboard(activity, parseException(e));
+   }
+
+   private String parseException(Exception e){
+      String error = "Last night of Dana - Unhandled exception from thread\n";
+      error += "Reason of the error: " + e.getMessage() + "\nTRACE:\n";
+      StackTraceElement[] trace = e.getStackTrace();
+      for (StackTraceElement aTrace : trace) error += aTrace.toString() + "\n";
+      error += "CAUSE:\n";
+      if (e.getCause() != null) {
+         StackTraceElement[] cause = e.getCause().getStackTrace();
+         for (StackTraceElement aCause : cause) error += aCause.toString() + "\n";
+      } else {
+         error += "Cause not known";
+      }
+      return error;
    }
 }

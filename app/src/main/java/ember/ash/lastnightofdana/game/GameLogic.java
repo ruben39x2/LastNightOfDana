@@ -9,6 +9,10 @@ public class GameLogic {
             if (choice == R.id.button_option1) return SceneEnum.DANA_SEE_HAYMITCH;
             if (choice == R.id.button_option2) return SceneEnum.DANA_AVOID_HAYMITCH;
             break;
+         case DANA_SLEEPING:
+            if (choice == R.id.button_option1) return SceneEnum.DANA_GOES_TO_TOWN;
+            if (choice == R.id.button_option2) return SceneEnum.DANA_GOES_TO_BED;
+            break;
       }
       return null;
    }

@@ -43,7 +43,7 @@ public class NarrateTextSequence extends Sequence {
    }
 
    private void notifyWaitingNarration(){
-      listener.onSequenceWaitingForNarration();
+      listener.onSequenceWaitingForClick(game.getLayoutFather());
    }
 
    private Animation getIntermitentAnimation(){

@@ -1,6 +1,7 @@
 package ember.ash.lastnightofdana.game;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.sequence.CrossfadeViewSequence;
 import ember.ash.lastnightofdana.sequence.DialogTextSequence;
 import ember.ash.lastnightofdana.sequence.FadeAllToBlackSequence;
 import ember.ash.lastnightofdana.sequence.FadeViewInSequence;
@@ -16,6 +17,7 @@ import ember.ash.lastnightofdana.sequence.ShowChoicesSequence;
 import ember.ash.lastnightofdana.sequence.ShowEarphonesAlertSequence;
 import ember.ash.lastnightofdana.sequence.SlideViewInSequence;
 import ember.ash.lastnightofdana.sequence.StopBackgroundMusicSequence;
+import ember.ash.lastnightofdana.sequence.WaitForClickSequence;
 import ember.ash.lastnightofdana.sequence.WaitSequence;
 
 public class Scenes {
@@ -57,6 +59,8 @@ public class Scenes {
       queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_intro4), game));
       queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
       queue.addSequence(new WaitSequence(1000, game));
+      // huhu
+      //queue.addSequence(new CrossfadeViewSequence(500, game.getImageLayer1(), R.drawable.dana_sitting_bed, game));
       // Crossfade Here would be great =)
       queue.addSequence(new FadeViewOutSequence(300, game.getImageLayer1()));
       queue.addSequence(new SetImageSequence(R.drawable.dana_sitting_bed, game.getImageLayer1()));
@@ -89,6 +93,7 @@ public class Scenes {
       queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
       queue.addSequence(new FadeViewOutSequence(1000, game.getImageLayer2()));
       queue.addSequence(new PlaySoundSequence(game.getIdDoorSound(), game));
+      game.playScene(SceneEnum.DANA_TALK_HAYMITCH1);
    }
 
    public static void enqueueDanaAvoidHaymitch(Game game, SequenceQueue queue){
@@ -104,12 +109,55 @@ public class Scenes {
       queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
       queue.addSequence(new FadeViewOutSequence(1000, game.getImageLayer2()));
       queue.addSequence(new PlaySoundSequence(game.getIdDoorSound(), game));
-      queue.addSequence(new WaitSequence(500, game));
+      queue.addSequence(new WaitSequence(2000, game));
+      game.playScene(SceneEnum.DANA_SLEEPING);
    }
+
+   public static void enqueueDanaSleeping(Game game, SequenceQueue queue){
+      queue.addSequence(new WaitForClickSequence(game.getImageLayer1()));
+      queue.addSequence(new PlaySoundSequence(game.getIdDuruSound(), game));
+      queue.addSequence(new FadeViewOutSequence(300, game.getImageLayer1()));
+      queue.addSequence(new SetImageSequence(R.drawable.dana_sitting_bed, game.getImageLayer1()));
+      queue.addSequence(new FadeViewInSequence(300, game.getImageLayer1()));
+      queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_sleeping1), game));
+      queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_sleeping2), game));
+      queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
+      queue.addSequence(new WaitSequence(700, game));
+      queue.addSequence(new ShowChoicesSequence(
+              game.getActivity().getString(R.string.wake_up),
+              game.getActivity().getString(R.string.sleep),
+              game));
+   }
+
+   public static void enqueueDanaGoesToBedAgain(Game game, SequenceQueue queue){
+      queue.addSequence(new HideChoicesSequence(game));
+      queue.addSequence(new WaitSequence(500, game));
+      queue.addSequence(new FadeViewOutSequence(300, game.getImageLayer1()));
+      queue.addSequence(new SetImageSequence(R.drawable.dana_lying_bed, game.getImageLayer1()));
+      queue.addSequence(new FadeViewInSequence(300, game.getImageLayer1()));
+      queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_goes_to_bed1), game));
+      queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
+      queue.addSequence(new WaitSequence(1000, game));
+      queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_goes_to_bed2), game));
+      queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
+      game.playScene(SceneEnum.DANA_SLEEPING);
+   }
+
+   public static void enqueueDanaGoesToTown(Game game, SequenceQueue queue) {
+      queue.addSequence(new HideChoicesSequence(game));
+      queue.addSequence(new WaitSequence(1000, game));
+      queue.addSequence(new DialogTextSequence(game.getActivity().getString(R.string.dana_goes_to_town1), game));
+      queue.addSequence(new FadeViewOutSequence(500, game.getLayoutDialogText()));
+      queue.addSequence(new WaitSequence(1500, game));
+   }
+
 
    public static void enqueueDanaTalkToHaymitch1(Game game, SequenceQueue queue){
       queue.addSequence(new FadeAllToBlackSequence(800, game));
       queue.addSequence(new StopBackgroundMusicSequence(game));
+      queue.addSequence(new SetImageSequence(R.drawable.pasilloexterior, game.getImageBackground()));
       queue.addSequence(new FadeViewInSequence(800, game.getImageBackground()));
+      queue.addSequence(new WaitSequence(500, game));
+      queue.addSequence(new PlayBackgroundMusicSequence(R.raw.music_charming, true, game));
    }
 }

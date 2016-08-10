@@ -45,6 +45,7 @@ public class HideEarphonesAlertSequence extends Sequence {
       });
       imageHeadphones.startAnimation(fade);
       textHeadphones.startAnimation(fade);
+      //throw new RuntimeException("omgogmg");
    }
 
    /**

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.sequence.FadeAllToBlackSequence;
 import ember.ash.lastnightofdana.sequence.SequenceQueue;
 
 /**
@@ -38,7 +39,7 @@ public class Game {
    private Activity activity;
    private SequenceQueue queue;
    private SoundPool soundPool;
-   private int idClickSound, idDoorSound;
+   private int idClickSound, idDoorSound, idDuruSound;
    private MediaPlayer mediaPlayer;
    private int currentMusicId;
    private SceneEnum currentScene = SceneEnum.MAIN_MENU;
@@ -58,7 +59,6 @@ public class Game {
    }
 
    public void release(){
-      this.activity = null;
       queue.removeAllAndStop();
    }
 
@@ -66,6 +66,7 @@ public class Game {
       soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
       idClickSound = soundPool.load(activity, R.raw.click, 0);
       idDoorSound = soundPool.load(activity, R.raw.door, 0);
+      idDuruSound = soundPool.load(activity, R.raw.duruduru, 0);
    }
 
    public void playMusic(int resId, boolean loop){
@@ -94,6 +95,10 @@ public class Game {
       return idDoorSound;
    }
 
+   public int getIdDuruSound() {
+      return idDuruSound;
+   }
+
    public void playClick(){
       soundPool.play(idClickSound, 1, 1, 1, 0, 1);
    }
@@ -103,7 +108,7 @@ public class Game {
    }
 
    public void start(){
-      this.getTextName().setText(R.string.dana);
+      getTextName().setText(R.string.dana);
       playScene(SceneEnum.DANA_INTRO);
       playScene(SceneEnum.DANA_TALKING_MAID);
    }
@@ -122,18 +127,18 @@ public class Game {
       switch (scene){
          case DANA_INTRO: Scenes.enqueueDanaIntro(this, queue); break;
          case DANA_TALKING_MAID: Scenes.enqueueDanaMaid(this, queue); break;
-         case DANA_SEE_HAYMITCH:
-            Scenes.enqueueDanaSeeHaymitch(this, queue);
-            Scenes.enqueueDanaTalkToHaymitch1(this, queue);
-            break;
+         case DANA_SEE_HAYMITCH: Scenes.enqueueDanaSeeHaymitch(this, queue); break;
+         case DANA_TALK_HAYMITCH1: Scenes.enqueueDanaTalkToHaymitch1(this, queue); break;
          case DANA_AVOID_HAYMITCH: Scenes.enqueueDanaAvoidHaymitch(this, queue); break;
+         case DANA_SLEEPING: Scenes.enqueueDanaSleeping(this, queue); break;
+         case DANA_GOES_TO_BED: Scenes.enqueueDanaGoesToBedAgain(this, queue); break;
+         case DANA_GOES_TO_TOWN: Scenes.enqueueDanaGoesToTown(this, queue); break;
       }
    }
 
    public RelativeLayout getLayoutFather(){
       return (RelativeLayout) activity.findViewById(R.id.layout_father);
    }
-
 
    public TextView getTextName(){
       return (TextView) activity.findViewById(R.id.text_player_name);

@@ -8,7 +8,7 @@
     <string name="art_by">Art by:\nSara Piñeiro</string>
     <string name="programmed_by">Programmed by:\nRubén Montero</string>
     <string name="dana_intro3">Maid:\nGood morning, milady. Wake up.</string>
-    <string name="dana_intro4">Maid:\nTonight the feast convoked by your father will\ntake place</string>
+    <string name="dana_intro4">Maid:\nTonight the feast convoked by your father will\ntake place.</string>
     <string name="dana_intro5">You:\nToday?</string>
     <string name="dana_intro6">Maid:\nYes, it is. A lot of people will assist.</string>
     <string name="dana_intro7">Maid:\nAnd now, please, dress up. Lord Haymitch has\ncome and wants to see you.</string>
@@ -22,4 +22,11 @@
     <string name="dana_avoid_haymitch1">You:\nI don\'t want to see Lord Haymitch now.</string>
     <string name="dana_avoid_haymitch2">You:\nPlease, tell him to go away.</string>
     <string name="dana_avoid_haymitch3">Maid:\nI will tell him.</string>
+    <string name="dana_sleeping1">You:\nI should not sleep so much.</string>
+    <string name="dana_sleeping2">You:\nI must wake up and go to the town.</string>
+    <string name="wake_up">Wake up</string>
+    <string name="sleep">Sleep</string>
+    <string name="dana_goes_to_bed1">You:\nI prefer stay sleeping.</string>
+    <string name="dana_goes_to_bed2">You:\nZzz...</string>
+    <string name="dana_goes_to_town1">You:\nI will dress up and go outside</string>
 </resources>

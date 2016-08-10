@@ -1,10 +1,13 @@
 package ember.ash.lastnightofdana.sequence;
 
+import android.util.Log;
 import android.view.View;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import ember.ash.lastnightofdana.R;
+import ember.ash.lastnightofdana.activity.GameActivity;
 import ember.ash.lastnightofdana.game.Game;
 
 /**
@@ -74,21 +77,11 @@ public class SequenceQueue {
          }
 
          @Override
-         public void onSequenceWaitingForNarration() {
-            game.getLayoutFather().setOnClickListener(new View.OnClickListener() {
+         public void onSequenceWaitingForClick(final View viewToClick) {
+            viewToClick.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                  notifySequenceNarrationFinished();
-               }
-            });
-         }
-
-         @Override
-         public void onSequenceWaitingForDialog() {
-            game.getLayoutDialogText().setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                  notifySequenceDialogFinished();
+                  notifyClickProduced(viewToClick);
                }
             });
          }
@@ -100,42 +93,27 @@ public class SequenceQueue {
     * This triggers moreless the same things that are triggered when a sequence finishes
     * an onSequenceFinished() is called.
     */
-   public void notifySequenceNarrationFinished(){
-      // Play a cool 'duru'
-      game.playClick();
+   public void notifyClickProduced(View viewClicked){
+      viewClicked.setOnClickListener(null); //remove the onClickListener
 
       // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
       isPlaying = false;
       if (!queue.isEmpty()) playNextScene();
 
-      /* This is extra cool stuff hehe */
-      // Clean the narration text
-      game.getArrowMiddle().clearAnimation();
-      game.getArrowMiddle().setVisibility(View.GONE);
+      if (viewClicked.getId() == R.id.layout_father){ // THEN THIS IS A TEXT NARRATION SEQUENCE
+         // Clean the narration text
+         game.getArrowMiddle().clearAnimation();
+         game.getArrowMiddle().setVisibility(View.GONE);
+         game.playClick();
+         return;
+      }
 
-      // Remove the listener from the screen
-      game.getLayoutFather().setOnClickListener(null);
-      game.getLayoutDialogText().setOnClickListener(null);
+      if (viewClicked.getId() == R.id.layout_dialog){ // THEN THIS IS A DIALOG NARRATION SEQUENCE
+         game.getArrowDialog().clearAnimation();
+         game.getArrowDialog().setVisibility(View.GONE);
+         game.playClick();
+         return;
+      }
    }
 
-   /**
-    * This is called when the screen hangs for the user to touch it and a onClick event happens.
-    * This triggers moreless the same things that are triggered when a sequence finishes
-    * an onSequenceFinished() is called.
-    */
-   public void notifySequenceDialogFinished(){
-      // Play a cool 'duru'
-      game.playClick();
-
-      // Do the stuff that a normal "sequenceFinished" would do, in order to trigger next scene
-      isPlaying = false;
-      if (!queue.isEmpty()) playNextScene();
-
-      // If we are waiting because of a dialog text... let's do cool stuff too
-      game.getArrowDialog().clearAnimation();
-      game.getArrowDialog().setVisibility(View.GONE);
-
-      // Remove the listener from the dialog
-      game.getLayoutDialogText().setOnClickListener(null);
-   }
 }

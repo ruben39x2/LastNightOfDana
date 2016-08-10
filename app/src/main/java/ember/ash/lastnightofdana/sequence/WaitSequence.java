@@ -23,6 +23,7 @@ public class WaitSequence extends Sequence {
    }
 
    private void waitBro(){
+
       new Thread(new Runnable() {
          @Override
          public void run() {
@@ -41,6 +42,7 @@ public class WaitSequence extends Sequence {
             }
          }
       }).start();
+
    }
 
    private void notifyListener(){

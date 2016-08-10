@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import ember.ash.lastnightofdana.activity.GameActivity;
 import ember.ash.lastnightofdana.game.Game;
 
 public class FadeAllToBlackSequence extends Sequence {
@@ -35,14 +36,15 @@ public class FadeAllToBlackSequence extends Sequence {
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            for (int i = 0; i < parentViewGroup.getChildCount(); i++) {
-               View view = parentViewGroup.getChildAt(i);
-               view.setClickable(true);
-               view.setVisibility(View.GONE);
-               //if (view instanceof ImageView) ((ImageView)view).setImageDrawable(null); // clean memory
-            }
-            notifyListener();
+               for (int i = 0; i < parentViewGroup.getChildCount(); i++) {
+                  View view = parentViewGroup.getChildAt(i);
+                  view.setClickable(true);
+                  view.setVisibility(View.GONE);
+                  //if (view instanceof ImageView) ((ImageView)view).setImageDrawable(null); // clean memory
+               }
+               notifyListener();
          }
+
       });
 
       // Make nothing clickable and animate it

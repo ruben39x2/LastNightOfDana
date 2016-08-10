@@ -64,7 +64,7 @@ public class DialogTextSequence extends Sequence {
    }
 
    private void notifyWaitingDialog(){
-      listener.onSequenceWaitingForDialog();
+      listener.onSequenceWaitingForClick(game.getLayoutDialogText());
    }
 
    private Animation getIntermitentAnimation(){
