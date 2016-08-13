@@ -3,19 +3,17 @@ package ember.ash.lastnightofdana.sequence;
 import android.view.View;
 import android.widget.ImageView;
 
-public class SetImageSequence extends Sequence {
+public class ClearViewSequence extends Sequence {
    private SequenceListener listener;
    private View view;
-   private int imageResource;
 
-   public SetImageSequence(int imageResource, View view){
-      this.imageResource = imageResource;
+   public ClearViewSequence(View view){
       this.view = view;
    }
 
    @Override
    public void play() {
-      setImage();
+      clearView();
    }
 
    @Override
@@ -23,9 +21,8 @@ public class SetImageSequence extends Sequence {
       this.listener = listener;
    }
 
-   private void setImage(){
+   private void clearView(){
       ((ImageView)view).setImageDrawable(null);
-      ((ImageView)view).setImageResource(imageResource);
       notifyListener();
    }
 

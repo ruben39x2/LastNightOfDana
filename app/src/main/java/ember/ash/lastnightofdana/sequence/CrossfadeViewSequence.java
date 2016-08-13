@@ -33,12 +33,13 @@ public class CrossfadeViewSequence extends Sequence {
    }
 
    private void crossfadeView(){
+
       Drawable[] images = new Drawable[2];
       images[0] = ((ImageView) view).getDrawable();
       ((ImageView) view).setImageDrawable(null); // clear the content of the imageview to optimize memory
       images[1] = ContextCompat.getDrawable(game.getActivity(), imageResource);
 
-      TransitionDrawable crossfader = new TransitionDrawable(images);
+      final TransitionDrawable crossfader = new TransitionDrawable(images);
       ((ImageView) view).setImageDrawable(crossfader);
 
       crossfader.setCrossFadeEnabled(true);
@@ -53,6 +54,7 @@ public class CrossfadeViewSequence extends Sequence {
                game.getActivity().runOnUiThread(new Runnable() {
                   @Override
                   public void run() {
+                     ((ImageView)view).setImageDrawable(ContextCompat.getDrawable(game.getActivity(), imageResource));
                      notifyListener();
                   }
                });

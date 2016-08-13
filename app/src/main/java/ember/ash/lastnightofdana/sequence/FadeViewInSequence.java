@@ -8,10 +8,16 @@ public class FadeViewInSequence extends Sequence {
    private SequenceListener listener;
    private View view;
    private long duration;
+   private boolean asynchronous = false;
 
    public FadeViewInSequence(long duration, View view){
       this.duration = duration;
       this.view = view;
+   }
+
+   public FadeViewInSequence setAsynchronous(){
+      this.asynchronous = true;
+      return this;
    }
 
    @Override
@@ -31,10 +37,11 @@ public class FadeViewInSequence extends Sequence {
       fade.setAnimationListener(new AnimationEndListener() {
          @Override
          public void onAnimationEnd(Animation animation) {
-            notifyListener();
+            if (!asynchronous) notifyListener(); // notify listener when animation ends
          }
       });
       view.startAnimation(fade);
+      if (asynchronous) notifyListener();
    }
 
    private void notifyListener(){

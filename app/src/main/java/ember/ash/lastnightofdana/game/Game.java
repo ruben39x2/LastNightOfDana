@@ -39,7 +39,7 @@ public class Game {
    private Activity activity;
    private SequenceQueue queue;
    private SoundPool soundPool;
-   private int idClickSound, idDoorSound, idDuruSound;
+   private int idClickSound, idDoorSound, idDoorSound2, idDuruSound;
    private MediaPlayer mediaPlayer;
    private int currentMusicId;
    private SceneEnum currentScene = SceneEnum.MAIN_MENU;
@@ -66,6 +66,7 @@ public class Game {
       soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
       idClickSound = soundPool.load(activity, R.raw.click, 0);
       idDoorSound = soundPool.load(activity, R.raw.door, 0);
+      idDoorSound2 = soundPool.load(activity, R.raw.door2, 0);
       idDuruSound = soundPool.load(activity, R.raw.duruduru, 0);
    }
 
@@ -95,6 +96,10 @@ public class Game {
       return idDoorSound;
    }
 
+   public int getIdDoorSound2(){
+      return idDoorSound2;
+   }
+
    public int getIdDuruSound() {
       return idDuruSound;
    }
@@ -110,7 +115,6 @@ public class Game {
    public void start(){
       getTextName().setText(R.string.dana);
       playScene(SceneEnum.DANA_INTRO);
-      playScene(SceneEnum.DANA_TALKING_MAID);
    }
 
    /**
