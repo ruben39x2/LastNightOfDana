@@ -8,7 +8,6 @@ public class ShowChoicesSequence extends Sequence {
    private SequenceListener listener;
    private Game game;
    private String choice1, choice2;
-   private boolean listenerNotified;
 
    public ShowChoicesSequence(String choice1, String choice2, Game game){
       this.game = game;

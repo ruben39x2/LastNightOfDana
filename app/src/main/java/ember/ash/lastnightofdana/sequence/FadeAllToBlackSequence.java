@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
 import ember.ash.lastnightofdana.activity.GameActivity;
 import ember.ash.lastnightofdana.game.Game;
@@ -40,7 +41,12 @@ public class FadeAllToBlackSequence extends Sequence {
                   View view = parentViewGroup.getChildAt(i);
                   view.setClickable(true);
                   view.setVisibility(View.GONE);
-                  //if (view instanceof ImageView) ((ImageView)view).setImageDrawable(null); // clean memory
+                  if (view.equals(game.getImageBackground()) ||
+                      view.equals(game.getImageLayer1()) ||
+                      view.equals(game.getImageLayer2()) ||
+                      view.equals(game.getImageLayer3())) {
+                     ((ImageView)view).setImageDrawable(null); // clean memory
+                  }
                }
                notifyListener();
          }

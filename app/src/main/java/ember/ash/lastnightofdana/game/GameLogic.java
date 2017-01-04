@@ -13,6 +13,10 @@ public class GameLogic {
             if (choice == R.id.button_option1) return SceneEnum.DANA_GOES_TO_TOWN;
             if (choice == R.id.button_option2) return SceneEnum.DANA_GOES_TO_BED;
             break;
+         case DANA_TALK_TO_HAYMITCH_1:
+            if (choice == R.id.button_option1) return SceneEnum.DANA_WALK_WITH_HAYMITCH;
+            if (choice == R.id.button_option2) return SceneEnum.DANA_GOES_TO_TOWN_TRANSITION;
+            break;
       }
       return null;
    }

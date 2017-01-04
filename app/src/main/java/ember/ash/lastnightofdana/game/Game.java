@@ -39,7 +39,7 @@ public class Game {
    private Activity activity;
    private SequenceQueue queue;
    private SoundPool soundPool;
-   private int idClickSound, idDoorSound, idDoorSound2, idDuruSound;
+   private int idClickSound, idDoorSound, idDoorSound2, idDuruSound, idBirdsSound, idStepsSound;
    private MediaPlayer mediaPlayer;
    private int currentMusicId;
    private SceneEnum currentScene = SceneEnum.MAIN_MENU;
@@ -68,6 +68,8 @@ public class Game {
       idDoorSound = soundPool.load(activity, R.raw.door, 0);
       idDoorSound2 = soundPool.load(activity, R.raw.door2, 0);
       idDuruSound = soundPool.load(activity, R.raw.duruduru, 0);
+      idBirdsSound = soundPool.load(activity, R.raw.birds, 0);
+      idStepsSound = soundPool.load(activity, R.raw.steps, 0);
    }
 
    public void playMusic(int resId, boolean loop){
@@ -104,6 +106,14 @@ public class Game {
       return idDuruSound;
    }
 
+   public int getIdBirdsSound(){
+      return idBirdsSound;
+   }
+
+   public int getIdStepsSound(){
+      return idStepsSound;
+   }
+
    public void playClick(){
       soundPool.play(idClickSound, 1, 1, 1, 0, 1);
    }
@@ -132,11 +142,15 @@ public class Game {
          case DANA_INTRO: Scenes.enqueueDanaIntro(this, queue); break;
          case DANA_TALKING_MAID: Scenes.enqueueDanaMaid(this, queue); break;
          case DANA_SEE_HAYMITCH: Scenes.enqueueDanaSeeHaymitch(this, queue); break;
-         case DANA_TALK_HAYMITCH1: Scenes.enqueueDanaTalkToHaymitch1(this, queue); break;
+         case DANA_SALUTES_HAYMITCH: Scenes.enqueueDanaSalutesHaymitch(this, queue); break;
+         case DANA_TALK_TO_HAYMITCH_1: Scenes.enqueueDanaTalkToHaymitch1(this, queue); break;
+         case DANA_WALK_WITH_HAYMITCH: Scenes.enqueueDanaWalkWithHaymitch(this, queue); break;
          case DANA_AVOID_HAYMITCH: Scenes.enqueueDanaAvoidHaymitch(this, queue); break;
          case DANA_SLEEPING: Scenes.enqueueDanaSleeping(this, queue); break;
          case DANA_GOES_TO_BED: Scenes.enqueueDanaGoesToBedAgain(this, queue); break;
          case DANA_GOES_TO_TOWN: Scenes.enqueueDanaGoesToTown(this, queue); break;
+         case DANA_GOES_TO_TOWN_TRANSITION: Scenes.enqueueDanaGoesToTownTransition(this, queue); break;
+         case DANA_GOES_TO_TOWN_ENTRY: Scenes.enqueueDanaGoesToTownEntry(this, queue); break;
       }
    }
 
